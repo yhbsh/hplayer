@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 int main(void) {
+
     AVFormatContext *avformat_context = NULL;
 
     avformat_open_input(&avformat_context, "file.mp4", NULL, NULL);
@@ -29,6 +30,7 @@ int main(void) {
         while (avcodec_receive_frame(avcodec_context, av_frame) == 0) {
             // printf("%d\n", *av_frame->linesize);
         }
+
         av_packet_unref(&av_packet);
     }
 
