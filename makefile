@@ -10,8 +10,6 @@ debug:
 	mkdir -p build
 	clang $(CFLAGS) -g3 -o build/hplayer hplayer.c $(LIBS)
 
-
-
 clean:
 	rm hplayer
 
