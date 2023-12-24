@@ -8,3 +8,6 @@
 ```zsh
 $ make
 ```
+```zsh
+./hplayer [file]
+```
