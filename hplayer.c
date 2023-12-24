@@ -7,14 +7,18 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-int main(void) {
-    SDL_Window *window = SDL_CreateWindow("Player", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 600, 600, 0);
+int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        fprintf(stderr, "[Usage]: ./hplayer [file]\n");
+        return 1;
+    }
+
+    SDL_Window *window = SDL_CreateWindow("Hplayer", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 600, 600, 0);
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
-    SDL_Texture *texture = NULL;
 
     AVFormatContext *avformat_context = NULL;
 
-    avformat_open_input(&avformat_context, "file.mp4", NULL, NULL);
+    avformat_open_input(&avformat_context, argv[1], NULL, NULL);
     avformat_find_stream_info(avformat_context, NULL);
 
     const AVStream *av_stream = avformat_context->streams[0];
