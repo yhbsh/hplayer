@@ -1,9 +1,14 @@
+CFLAGS = `pkg-config --cflags libavformat libavcodec libavutil sdl2 sdl2_image` -Wall -Wextra -pedantic
+LIBS = `pkg-config --libs libavformat libavcodec libavutil sdl2 sdl2_image` -Wall -Wextra -pedantic
+
+
+
 build: hplayer.c
-	clang -Wall -Wextra -pedantic -I/opt/homebrew/include -O3 -o hplayer hplayer.c -L/opt/homebrew/lib -lavformat -lavcodec -lswscale -lavutil -lsdl2 -lsdl2_image
+	clang $(CFLAGS) -O3 -o hplayer hplayer.c $(LIBS)
 
 debug:
 	mkdir -p build
-	clang -Wall -Wextra -pedantic -I/opt/homebrew/include -g3 -o build/main main.c -L/opt/homebrew/lib -lavformat -lavcodec -lswscale -lavutil -lsdl2 -lsdl2_image
+	clang $(CFLAGS) -g3 -o build/hplayer hplayer.c $(LIBS)
 
 
 
