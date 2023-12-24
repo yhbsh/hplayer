@@ -2,6 +2,9 @@
 
 - A simple video player using ffmpeg libraries (libavformat, libavcodec, ...)
 
+## Demo
+
+https://github.com/yhbsh/ffmpeg_video_player/assets/86262467/06099b8c-a82c-48b3-b6c9-52cc3b332995
 
 ## Build
 
