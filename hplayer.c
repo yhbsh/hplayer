@@ -62,12 +62,12 @@ int main(int argc, char *argv[]) {
             // draw the frame on a YUV plane using sdl
             SDL_Texture *texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_IYUV, SDL_TEXTUREACCESS_STREAMING, av_frame->width, av_frame->height);
 
-						uint8_t *yplane  = av_frame->data[0];
-						const int ylinesize = av_frame->linesize[0];
-						uint8_t *uplane  = av_frame->data[1];
-						const int ulinesize = av_frame->linesize[1];
-						uint8_t *vplane  = av_frame->data[2];
-						const int vlinesize = av_frame->linesize[2];
+            uint8_t *yplane = av_frame->data[0];
+            const int ylinesize = av_frame->linesize[0];
+            uint8_t *uplane = av_frame->data[1];
+            const int ulinesize = av_frame->linesize[1];
+            uint8_t *vplane = av_frame->data[2];
+            const int vlinesize = av_frame->linesize[2];
 
             SDL_UpdateYUVTexture(texture, NULL, yplane, ylinesize, uplane, ulinesize, vplane, vlinesize);
             SDL_RenderCopy(renderer, texture, NULL, NULL);
