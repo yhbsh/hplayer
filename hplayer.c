@@ -87,7 +87,7 @@ int main(int argc, char *argv[]) {
         }
 
         // make sure it plays at 60 frames per second
-        SDL_Delay(16.667);
+        SDL_Delay(16);
     }
 
     //    No need to deallocate anything, the OS will do it for us
