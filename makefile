@@ -7,4 +7,4 @@ opengl: opengl.c
 	cc -g3 opengl.c -o opengl -lavcodec -lavformat -lswscale -lglfw -framework opengl
 
 ffprobe: ffprobe.c
-	cc -g3 ffprobe.c -o ffprobe -lavcodec -lavformat -lswscale -lglfw -framework opengl
+	cc -g3 ffprobe.c -o ffprobe -lavcodec -lavformat
