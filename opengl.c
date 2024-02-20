@@ -10,28 +10,26 @@
 
 bool load_frame(const char *fp, int *w, int *h, unsigned char **buff) {
   int ret = 0;
-  printf("loading frame...\n");
 
   AVFormatContext *avformat_ctx = avformat_alloc_context();
-  if (avformat_open_input(&avformat_ctx, fp, NULL, NULL) != 0) {
-    fprintf(stderr, "[ERROR]: avformat_open_input failed\n");
+  ret = avformat_open_input(&avformat_ctx, fp, NULL, NULL);
+  if (ret != 0) {
+    fprintf(stderr, "[ERROR]: avformat_open_input: %s\n", av_err2str(ret));
     return false;
   }
 
-  int vsi = -1;
+  ret = av_find_best_stream(avformat_ctx, AVMEDIA_TYPE_VIDEO, -1, -1, NULL, 0);
+  if (ret < 0) {
+    fprintf(stderr, "[ERROR]: av_find_best_stream: %s\n", av_err2str(ret));
+    return false;
+  }
 
-  AVCodecParameters *avcodec_params;
-  const AVCodec *avcodec;
-  for (int i = 0; i < avformat_ctx->nb_streams; i++) {
-    avcodec_params = avformat_ctx->streams[i]->codecpar;
-    avcodec = avcodec_find_decoder(avcodec_params->codec_id);
-    if (avcodec == NULL) {
-      continue;
-    }
-    if (avcodec_params->codec_type == AVMEDIA_TYPE_VIDEO) {
-      vsi = i;
-      break;
-    }
+  AVStream *vs = avformat_ctx->streams[ret];
+  AVCodecParameters *avcodec_params = vs->codecpar;
+  const AVCodec *avcodec = avcodec_find_decoder(avcodec_params->codec_id);
+  if (avcodec == NULL) {
+    fprintf(stderr, "[ERROR]: avcodec_find_decoder: could not find decoder for %s codec\n", av_get_media_type_string(AVMEDIA_TYPE_VIDEO));
+    return false;
   }
 
   AVCodecContext *avcodec_ctx = avcodec_alloc_context3(avcodec);
@@ -65,7 +63,7 @@ bool load_frame(const char *fp, int *w, int *h, unsigned char **buff) {
   }
 
   while (av_read_frame(avformat_ctx, avpacket) >= 0) {
-    if (avpacket->stream_index != vsi) {
+    if (avpacket->stream_index != vs->index) {
       continue;
     }
 
@@ -114,7 +112,7 @@ bool load_frame(const char *fp, int *w, int *h, unsigned char **buff) {
 }
 
 int main(void) {
-  const char *fp = "file.mp4";
+  const char *fp = "samples/s2.mp4";
   int x, y;
 
   unsigned char *buff;
