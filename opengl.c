@@ -11,7 +11,7 @@
 bool load_frame(const char *fp, int *w, int *h, unsigned char **buff) {
   int ret = 0;
 
-  AVFormatContext *avformat_ctx = avformat_alloc_context();
+  AVFormatContext *avformat_ctx = NULL;
   ret = avformat_open_input(&avformat_ctx, fp, NULL, NULL);
   if (ret != 0) {
     fprintf(stderr, "[ERROR]: avformat_open_input: %s\n", av_err2str(ret));
