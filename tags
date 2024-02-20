@@ -1,0 +1,447 @@
+AVActiveFormatDescription	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/frame.h	/^enum AVActiveFormatDescription {$/
+AVAdler	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/adler32.h	/^typedef uint32_t AVAdler;$/
+AVAmbientViewingEnvironment	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/ambient_viewing_environment.h	/^} AVAmbientViewingEnvironment;$/
+AVAudioFifo	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/audio_fifo.h	/^typedef struct AVAudioFifo AVAudioFifo;$/
+AVAudioServiceType	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/defs.h	/^enum AVAudioServiceType {$/
+AVBSFContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/bsf.h	/^} AVBSFContext;$/
+AVBSFList	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/bsf.h	/^typedef struct AVBSFList AVBSFList;$/
+AVBitStreamFilter	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/bsf.h	/^} AVBitStreamFilter;$/
+AVBlowfish	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/blowfish.h	/^} AVBlowfish;$/
+AVBuffer	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/buffer.h	/^typedef struct AVBuffer AVBuffer;$/
+AVBufferPool	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/buffer.h	/^typedef struct AVBufferPool AVBufferPool;$/
+AVBufferRef	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/buffer.h	/^} AVBufferRef;$/
+AVCIExy	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/csp.h	/^} AVCIExy;$/
+AVCPBProperties	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/defs.h	/^} AVCPBProperties;$/
+AVCRC	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/crc.h	/^typedef uint32_t AVCRC;$/
+AVCRCId	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/crc.h	/^}AVCRCId;$/
+AVCUDADeviceContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext_cuda.h	/^} AVCUDADeviceContext;$/
+AVCUDADeviceContextInternal	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext_cuda.h	/^typedef struct AVCUDADeviceContextInternal AVCUDAD/
+AVChannel	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/channel_layout.h	/^enum AVChannel {$/
+AVChannelCustom	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/channel_layout.h	/^} AVChannelCustom;$/
+AVChannelLayout	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/channel_layout.h	/^} AVChannelLayout;$/
+AVChannelOrder	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/channel_layout.h	/^enum AVChannelOrder {$/
+AVChapter	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavformat/avformat.h	/^} AVChapter;$/
+AVChromaLocation	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/pixfmt.h	/^enum AVChromaLocation {$/
+AVClass	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/log.h	/^} AVClass;$/
+AVClassCategory	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/log.h	/^}AVClassCategory;$/
+AVCodec	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/codec.h	/^} AVCodec;$/
+AVCodecContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/avcodec.h	/^} AVCodecContext;$/
+AVCodecDescriptor	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/codec_desc.h	/^} AVCodecDescriptor;$/
+AVCodecHWConfig	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/codec.h	/^} AVCodecHWConfig;$/
+AVCodecID	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/codec_id.h	/^enum AVCodecID {$/
+AVCodecParameters	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/codec_par.h	/^} AVCodecParameters;$/
+AVCodecParser	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/avcodec.h	/^} AVCodecParser;$/
+AVCodecParserContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/avcodec.h	/^} AVCodecParserContext;$/
+AVColorPrimaries	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/pixfmt.h	/^enum AVColorPrimaries {$/
+AVColorPrimariesDesc	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/csp.h	/^} AVColorPrimariesDesc;$/
+AVColorRange	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/pixfmt.h	/^enum AVColorRange {$/
+AVColorSpace	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/pixfmt.h	/^enum AVColorSpace {$/
+AVColorTransferCharacteristic	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/pixfmt.h	/^enum AVColorTransferCharacteristic {$/
+AVComplexDouble	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/tx.h	/^} AVComplexDouble;$/
+AVComplexFloat	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/tx.h	/^} AVComplexFloat;$/
+AVComplexInt32	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/tx.h	/^} AVComplexInt32;$/
+AVComponentDescriptor	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/pixdesc.h	/^} AVComponentDescriptor;$/
+AVContentLightMetadata	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/mastering_display_metadata.h	/^} AVContentLightMetadata;$/
+AVD3D11FrameDescriptor	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext_d3d11va.h	/^} AVD3D11FrameDescriptor;$/
+AVD3D11VAContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/d3d11va.h	/^} AVD3D11VAContext;$/
+AVD3D11VADeviceContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext_d3d11va.h	/^} AVD3D11VADeviceContext;$/
+AVD3D11VAFramesContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext_d3d11va.h	/^} AVD3D11VAFramesContext;$/
+AVDCT	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/avdct.h	/^} AVDCT;$/
+AVDES	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/des.h	/^} AVDES;$/
+AVDOVIColorMetadata	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/dovi_meta.h	/^} AVDOVIColorMetadata;$/
+AVDOVIDataMapping	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/dovi_meta.h	/^} AVDOVIDataMapping;$/
+AVDOVIDecoderConfigurationRecord	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/dovi_meta.h	/^} AVDOVIDecoderConfigurationRecord;$/
+AVDOVIMappingMethod	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/dovi_meta.h	/^enum AVDOVIMappingMethod {$/
+AVDOVIMetadata	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/dovi_meta.h	/^} AVDOVIMetadata;$/
+AVDOVINLQMethod	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/dovi_meta.h	/^enum AVDOVINLQMethod {$/
+AVDOVINLQParams	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/dovi_meta.h	/^} AVDOVINLQParams;$/
+AVDOVIReshapingCurve	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/dovi_meta.h	/^} AVDOVIReshapingCurve;$/
+AVDOVIRpuDataHeader	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/dovi_meta.h	/^} AVDOVIRpuDataHeader;$/
+AVDRMDeviceContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext_drm.h	/^} AVDRMDeviceContext;$/
+AVDRMFrameDescriptor	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext_drm.h	/^} AVDRMFrameDescriptor;$/
+AVDRMLayerDescriptor	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext_drm.h	/^} AVDRMLayerDescriptor;$/
+AVDRMObjectDescriptor	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext_drm.h	/^} AVDRMObjectDescriptor;$/
+AVDRMPlaneDescriptor	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext_drm.h	/^} AVDRMPlaneDescriptor;$/
+AVDVProfile	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/dv_profile.h	/^} AVDVProfile;$/
+AVDXVA2DeviceContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext_dxva2.h	/^} AVDXVA2DeviceContext;$/
+AVDXVA2FramesContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext_dxva2.h	/^} AVDXVA2FramesContext;$/
+AVDetectionBBox	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/detection_bbox.h	/^} AVDetectionBBox;$/
+AVDetectionBBoxHeader	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/detection_bbox.h	/^} AVDetectionBBoxHeader;$/
+AVDictionary	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/dict.h	/^typedef struct AVDictionary AVDictionary;$/
+AVDictionaryEntry	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/dict.h	/^} AVDictionaryEntry;$/
+AVDiracSeqHeader	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/dirac.h	/^} AVDiracSeqHeader;$/
+AVDiscar	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/defs.h	/^enum AVDiscard{$/
+AVDownmixInfo	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/downmix_info.h	/^} AVDownmixInfo;$/
+AVDownmixType	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/downmix_info.h	/^enum AVDownmixType {$/
+AVDurationEstimationMethod	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavformat/avformat.h	/^enum AVDurationEstimationMethod {$/
+AVDynamicHDRPlus	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hdr_dynamic_metadata.h	/^} AVDynamicHDRPlus;$/
+AVDynamicHDRVivid	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hdr_dynamic_vivid_metadata.h	/^} AVDynamicHDRVivid;$/
+AVERROR	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/error.h	/^#define AVERROR(e) (-(e))   \/\/\/< Returns a nega/
+AVEncryptionInfo	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/encryption_info.h	/^} AVEncryptionInfo;$/
+AVEncryptionInitInfo	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/encryption_info.h	/^} AVEncryptionInitInfo;$/
+AVEscapeMode	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/avstring.h	/^enum AVEscapeMode {$/
+AVExecutor	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/executor.h	/^typedef struct AVExecutor AVExecutor;$/
+AVExpr	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/eval.h	/^typedef struct AVExpr AVExpr;$/
+AVFieldOrder	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/defs.h	/^enum AVFieldOrder {$/
+AVFifo	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/fifo.h	/^typedef struct AVFifo AVFifo;$/
+AVFifoBuffer	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/fifo.h	/^} AVFifoBuffer;$/
+AVFifoCB	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/fifo.h	/^typedef int AVFifoCB(void *opaque, void *buf, size/
+AVFilmGrainAOMParams	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/film_grain_params.h	/^} AVFilmGrainAOMParams;$/
+AVFilmGrainH274Params	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/film_grain_params.h	/^} AVFilmGrainH274Params;$/
+AVFilmGrainParams	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/film_grain_params.h	/^} AVFilmGrainParams;$/
+AVFilmGrainParamsType	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/film_grain_params.h	/^enum AVFilmGrainParamsType {$/
+AVFormatContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavformat/avformat.h	/^} AVFormatContext;$/
+AVFrame	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/frame.h	/^} AVFrame;$/
+AVFrameSideData	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/frame.h	/^} AVFrameSideData;$/
+AVFrameSideDataType	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/frame.h	/^enum AVFrameSideDataType {$/
+AVHDRPlusColorTransformParams	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hdr_dynamic_metadata.h	/^} AVHDRPlusColorTransformParams;$/
+AVHDRPlusOverlapProcessOption	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hdr_dynamic_metadata.h	/^enum AVHDRPlusOverlapProcessOption {$/
+AVHDRPlusPercentile	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hdr_dynamic_metadata.h	/^} AVHDRPlusPercentile;$/
+AVHDRVivid3SplineParams	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hdr_dynamic_vivid_metadata.h	/^} AVHDRVivid3SplineParams;$/
+AVHDRVividColorToneMappingParams	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hdr_dynamic_vivid_metadata.h	/^} AVHDRVividColorToneMappingParams;$/
+AVHDRVividColorTransformParams	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hdr_dynamic_vivid_metadata.h	/^} AVHDRVividColorTransformParams;$/
+AVHMAC	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hmac.h	/^typedef struct AVHMAC AVHMAC;$/
+AVHMACType	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hmac.h	/^enum AVHMACType {$/
+AVHWAccel	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/avcodec.h	/^} AVHWAccel;$/
+AVHWDeviceContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext.h	/^} AVHWDeviceContext;$/
+AVHWDeviceInternal	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext.h	/^typedef struct AVHWDeviceInternal AVHWDeviceIntern/
+AVHWDeviceType	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext.h	/^enum AVHWDeviceType {$/
+AVHWFrameTransferDirection	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext.h	/^enum AVHWFrameTransferDirection {$/
+AVHWFramesConstraints	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext.h	/^} AVHWFramesConstraints;$/
+AVHWFramesContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext.h	/^} AVHWFramesContext;$/
+AVHWFramesInternal	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext.h	/^typedef struct AVHWFramesInternal AVHWFramesIntern/
+AVIOContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavformat/avio.h	/^} AVIOContext;$/
+AVIODataMarkerType	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavformat/avio.h	/^enum AVIODataMarkerType {$/
+AVIODirContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavformat/avio.h	/^} AVIODirContext;$/
+AVIODirEntry	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavformat/avio.h	/^} AVIODirEntry;$/
+AVIODirEntryType	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavformat/avio.h	/^enum AVIODirEntryType {$/
+AVIOInterruptCB	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavformat/avio.h	/^} AVIOInterruptCB;$/
+AVIndexEntry	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavformat/avformat.h	/^} AVIndexEntry;$/
+AVInputFormat	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavformat/avformat.h	/^} AVInputFormat;$/
+AVLFG	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/lfg.h	/^} AVLFG;$/
+AVLumaCoefficients	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/csp.h	/^} AVLumaCoefficients;$/
+AVMasteringDisplayMetadata	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/mastering_display_metadata.h	/^} AVMasteringDisplayMetadata;$/
+AVMatrixEncoding	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/channel_layout.h	/^enum AVMatrixEncoding {$/
+AVMediaCodecBuffer	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/mediacodec.h	/^typedef struct MediaCodecBuffer AVMediaCodecBuffer/
+AVMediaCodecContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/mediacodec.h	/^} AVMediaCodecContext;$/
+AVMediaCodecDeviceContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext_mediacodec.h	/^} AVMediaCodecDeviceContext;$/
+AVMediaType	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/avutil.h	/^enum AVMediaType {$/
+AVMotionVector	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/motion_vector.h	/^} AVMotionVector;$/
+AVOpenCLDeviceContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext_opencl.h	/^} AVOpenCLDeviceContext;$/
+AVOpenCLFrameDescriptor	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext_opencl.h	/^} AVOpenCLFrameDescriptor;$/
+AVOpenCLFramesContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext_opencl.h	/^} AVOpenCLFramesContext;$/
+AVOption	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/opt.h	/^} AVOption;$/
+AVOptionRange	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/opt.h	/^} AVOptionRange;$/
+AVOptionRanges	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/opt.h	/^} AVOptionRanges;$/
+AVOptionTyp	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/opt.h	/^enum AVOptionType{$/
+AVOutputFormat	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavformat/avformat.h	/^} AVOutputFormat;$/
+AVPacket	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/packet.h	/^} AVPacket;$/
+AVPacketList	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/packet.h	/^} AVPacketList;$/
+AVPacketSideData	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/packet.h	/^} AVPacketSideData;$/
+AVPacketSideDataType	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/packet.h	/^enum AVPacketSideDataType {$/
+AVPanScan	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/defs.h	/^} AVPanScan;$/
+AVPictureStructure	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/avcodec.h	/^enum AVPictureStructure {$/
+AVPictureType	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/avutil.h	/^enum AVPictureType {$/
+AVPixFmtDescriptor	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/pixdesc.h	/^} AVPixFmtDescriptor;$/
+AVPixelFormat	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/pixfmt.h	/^enum AVPixelFormat {$/
+AVPrimaryCoefficients	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/csp.h	/^} AVPrimaryCoefficients;$/
+AVProbeData	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavformat/avformat.h	/^} AVProbeData;$/
+AVProducerReferenceTime	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/defs.h	/^} AVProducerReferenceTime;$/
+AVProfile	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/codec.h	/^} AVProfile;$/
+AVProgram	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavformat/avformat.h	/^} AVProgram;$/
+AVQSVContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/qsv.h	/^} AVQSVContext;$/
+AVQSVDeviceContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext_qsv.h	/^} AVQSVDeviceContext;$/
+AVQSVFramesContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext_qsv.h	/^} AVQSVFramesContext;$/
+AVRC4	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/rc4.h	/^} AVRC4;$/
+AVRational	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/rational.h	/^} AVRational;$/
+AVRegionOfInterest	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/frame.h	/^} AVRegionOfInterest;$/
+AVReplayGain	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/replaygain.h	/^} AVReplayGain;$/
+AVRounding	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/mathematics.h	/^enum AVRounding {$/
+AVSampleFormat	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/samplefmt.h	/^enum AVSampleFormat {$/
+AVSideDataParamChangeFlags	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/packet.h	/^enum AVSideDataParamChangeFlags {$/
+AVSphericalMapping	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/spherical.h	/^} AVSphericalMapping;$/
+AVSphericalProjection	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/spherical.h	/^enum AVSphericalProjection {$/
+AVStereo3D	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/stereo3d.h	/^} AVStereo3D;$/
+AVStereo3DType	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/stereo3d.h	/^enum AVStereo3DType {$/
+AVStereo3DView	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/stereo3d.h	/^enum AVStereo3DView {$/
+AVStream	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavformat/avformat.h	/^} AVStream;$/
+AVStreamParseType	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavformat/avformat.h	/^enum AVStreamParseType {$/
+AVSubsampleEncryptionInfo	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/encryption_info.h	/^} AVSubsampleEncryptionInfo;$/
+AVSubtitle	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/avcodec.h	/^} AVSubtitle;$/
+AVSubtitleRect	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/avcodec.h	/^} AVSubtitleRect;$/
+AVSubtitleType	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/avcodec.h	/^enum AVSubtitleType {$/
+AVTXContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/tx.h	/^typedef struct AVTXContext AVTXContext;$/
+AVTXFlags	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/tx.h	/^enum AVTXFlags {$/
+AVTXType	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/tx.h	/^enum AVTXType {$/
+AVTask	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/executor.h	/^typedef struct AVTask AVTask;$/
+AVTaskCallbacks	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/executor.h	/^} AVTaskCallbacks;$/
+AVThreadMessageFlags	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/threadmessage.h	/^} AVThreadMessageFlags;$/
+AVThreadMessageQueue	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/threadmessage.h	/^typedef struct AVThreadMessageQueue AVThreadMessag/
+AVTimebaseSource	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavformat/avformat.h	/^enum AVTimebaseSource {$/
+AVTimecode	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/timecode.h	/^} AVTimecode;$/
+AVTimecodeFlag	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/timecode.h	/^enum AVTimecodeFlag {$/
+AVUNERROR	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/error.h	/^#define AVUNERROR(e) (e)$/
+AVVAAPIDeviceContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext_vaapi.h	/^} AVVAAPIDeviceContext;$/
+AVVAAPIFramesContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext_vaapi.h	/^} AVVAAPIFramesContext;$/
+AVVAAPIHWConfig	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext_vaapi.h	/^} AVVAAPIHWConfig;$/
+AVVDPAUContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/vdpau.h	/^} AVVDPAUContext;$/
+AVVDPAUDeviceContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext_vdpau.h	/^} AVVDPAUDeviceContext;$/
+AVVideoBlockParams	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/video_enc_params.h	/^} AVVideoBlockParams;$/
+AVVideoEncParams	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/video_enc_params.h	/^} AVVideoEncParams;$/
+AVVideoEncParamsType	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/video_enc_params.h	/^enum AVVideoEncParamsType {$/
+AVVideoHint	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/video_hint.h	/^} AVVideoHint;$/
+AVVideoHintType	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/video_hint.h	/^} AVVideoHintType;$/
+AVVideoRect	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/video_hint.h	/^} AVVideoRect;$/
+AVVideotoolboxContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/videotoolbox.h	/^} AVVideotoolboxContext;$/
+AVVkFrame	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext_vulkan.h	/^typedef struct AVVkFrame AVVkFrame;$/
+AVVkFrameFlags	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext_vulkan.h	/^} AVVkFrameFlags;$/
+AVVorbisParseContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/vorbis_parser.h	/^typedef struct AVVorbisParseContext AVVorbisParseC/
+AVVulkanDeviceContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext_vulkan.h	/^} AVVulkanDeviceContext;$/
+AVVulkanFramesContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/hwcontext_vulkan.h	/^} AVVulkanFramesContext;$/
+AVWhitepointCoefficients	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/csp.h	/^typedef AVCIExy AVWhitepointCoefficients;$/
+AVXTEA	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/xtea.h	/^} AVXTEA;$/
+AV_BASE64_DECODE_SIZE	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/base64.h	/^#define AV_BASE64_DECODE_SIZE(x) ((x) * 3LL \/ 4)$/
+AV_BASE64_SIZE	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/base64.h	/^#define AV_BASE64_SIZE(x)  (((x)+2) \/ 3 * 4 + 1)$/
+AV_BE2NE16C	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/bswap.h	/^#define AV_BE2NE16C(x) AV_BE2NEC(16, x)$/
+AV_BE2NE32C	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/bswap.h	/^#define AV_BE2NE32C(x) AV_BE2NEC(32, x)$/
+AV_BE2NE64C	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/bswap.h	/^#define AV_BE2NE64C(x) AV_BE2NEC(64, x)$/
+AV_BE2NEC	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/bswap.h	/^#define AV_BE2NEC(s, x) (x)$/
+AV_BSWAP16C	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/bswap.h	/^#define AV_BSWAP16C(x) (((x) << 8 & 0xff00)  | ((x/
+AV_BSWAP32C	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/bswap.h	/^#define AV_BSWAP32C(x) (AV_BSWAP16C(x) << 16 | AV_/
+AV_BSWAP64C	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/bswap.h	/^#define AV_BSWAP64C(x) (AV_BSWAP32C(x) << 32 | AV_/
+AV_BSWAPC	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/bswap.h	/^#define AV_BSWAPC(s, x) AV_BSWAP##s##C(x)$/
+AV_CEIL_RSHIFT	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^#define AV_CEIL_RSHIFT(a,b) (!av_builtin_constant_/
+AV_CHANNEL_LAYOUT_MASK	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/channel_layout.h	/^#define AV_CHANNEL_LAYOUT_MASK(nb, m) \\$/
+AV_COPY	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#define AV_COPY(n, d, s) \\$/
+AV_COPY128	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#   define AV_COPY128(d, s)                    \\$/
+AV_COPY128U	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#   define AV_COPY128U(d, s)                      /
+AV_COPY16	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#   define AV_COPY16(d, s) AV_COPY(16, d, s)$/
+AV_COPY16U	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#   define AV_COPY16U(d, s) AV_COPYU(16, d, s)$/
+AV_COPY32	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#   define AV_COPY32(d, s) AV_COPY(32, d, s)$/
+AV_COPY32U	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#   define AV_COPY32U(d, s) AV_COPYU(32, d, s)$/
+AV_COPY64	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#   define AV_COPY64(d, s) AV_COPY(64, d, s)$/
+AV_COPY64U	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#   define AV_COPY64U(d, s) AV_COPYU(64, d, s)$/
+AV_COPYU	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#define AV_COPYU(n, d, s) AV_WN##n(d, AV_RN##n(s))/
+AV_GCC_VERSION_AT_LEAST	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/attributes.h	/^#    define AV_GCC_VERSION_AT_LEAST(x,y) (__GNUC__/
+AV_GCC_VERSION_AT_MOST	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/attributes.h	/^#    define AV_GCC_VERSION_AT_MOST(x,y)  (__GNUC__/
+AV_GLUE	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/macros.h	/^#define AV_GLUE(a, b) a ## b$/
+AV_HAS_BUILTIN	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/attributes.h	/^#    define AV_HAS_BUILTIN(x) __has_builtin(x)$/
+AV_IS_INPUT_DEVICE	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/log.h	/^#define AV_IS_INPUT_DEVICE(category) \\$/
+AV_IS_OUTPUT_DEVICE	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/log.h	/^#define AV_IS_OUTPUT_DEVICE(category) \\$/
+AV_JOIN	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/macros.h	/^#define AV_JOIN(a, b) AV_GLUE(a, b)$/
+AV_LE2NE16C	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/bswap.h	/^#define AV_LE2NE16C(x) AV_LE2NEC(16, x)$/
+AV_LE2NE32C	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/bswap.h	/^#define AV_LE2NE32C(x) AV_LE2NEC(32, x)$/
+AV_LE2NE64C	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/bswap.h	/^#define AV_LE2NE64C(x) AV_LE2NEC(64, x)$/
+AV_LE2NEC	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/bswap.h	/^#define AV_LE2NEC(s, x) AV_BSWAPC(s, x)$/
+AV_LOG_C	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/log.h	/^#define AV_LOG_C(x) ((x) << 8)$/
+AV_NE	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/macros.h	/^#   define AV_NE(be, le) (be)$/
+AV_NOWARN_DEPRECATED	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/attributes.h	/^#    define AV_NOWARN_DEPRECATED(code) \\$/
+AV_PIX_FMT_NE	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/pixfmt.h	/^#   define AV_PIX_FMT_NE(be, le) AV_PIX_FMT_##be$/
+AV_PRAGMA	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/macros.h	/^#define AV_PRAGMA(s) _Pragma(#s)$/
+AV_RB	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#   define AV_RB(s, p)    AV_RN##s(p)$/
+AV_RB16	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#       define AV_RB16(p) AV_RN16(p)$/
+AV_RB24	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#       define AV_RB24(p) AV_RN24(p)$/
+AV_RB32	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#       define AV_RB32(p) AV_RN32(p)$/
+AV_RB48	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#       define AV_RB48(p) AV_RN48(p)$/
+AV_RB64	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#       define AV_RB64(p) AV_RN64(p)$/
+AV_RB8	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#define AV_RB8(x)     (((const uint8_t*)(x))[0])$/
+AV_RL	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#   define AV_RL(s, p)    av_bswap##s(AV_RN##s(p))/
+AV_RL16	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#       define AV_RL16(p) AV_RN16(p)$/
+AV_RL24	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#       define AV_RL24(p) AV_RN24(p)$/
+AV_RL32	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#       define AV_RL32(p) AV_RN32(p)$/
+AV_RL48	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#       define AV_RL48(p) AV_RN48(p)$/
+AV_RL64	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#       define AV_RL64(p) AV_RN64(p)$/
+AV_RL64A	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#   define AV_RL64A(p) AV_RLA(64, p)$/
+AV_RL8	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#define AV_RL8(x)     AV_RB8(x)$/
+AV_RLA	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#   define AV_RLA(s, p)    av_bswap##s(AV_RN##s##A/
+AV_RN	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#   define AV_RN(s, p)    AV_RB##s(p)$/
+AV_RN16	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#       define AV_RN16(p) AV_RB16(p)$/
+AV_RN16A	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#   define AV_RN16A(p) AV_RNA(16, p)$/
+AV_RN24	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#       define AV_RN24(p) AV_RB24(p)$/
+AV_RN32	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#       define AV_RN32(p) AV_RB32(p)$/
+AV_RN32A	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#   define AV_RN32A(p) AV_RNA(32, p)$/
+AV_RN48	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#       define AV_RN48(p) AV_RB48(p)$/
+AV_RN64	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#       define AV_RN64(p) AV_RB64(p)$/
+AV_RN64A	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#   define AV_RN64A(p) AV_RNA(64, p)$/
+AV_RNA	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#define AV_RNA(s, p)    (((const av_alias##s*)(p))/
+AV_STRINGIFY	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/macros.h	/^#define AV_STRINGIFY(s)         AV_TOSTRING(s)$/
+AV_SWAP	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#define AV_SWAP(n, a, b) FFSWAP(av_alias##n, *(av_/
+AV_SWAP64	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#   define AV_SWAP64(a, b) AV_SWAP(64, a, b)$/
+AV_TOSTRING	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/macros.h	/^#define AV_TOSTRING(s) #s$/
+AV_UUID_ARG	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/uuid.h	/^#define AV_UUID_ARG(x)                  \\$/
+AV_UUID_LEN	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/uuid.h	/^typedef uint8_t AVUUID[AV_UUID_LEN];$/
+AV_VERSION	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/version.h	/^#define AV_VERSION(a, b, c) AV_VERSION_DOT(a, b, c/
+AV_VERSION_DOT	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/version.h	/^#define AV_VERSION_DOT(a, b, c) a ##.## b ##.## c$/
+AV_VERSION_INT	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/version.h	/^#define AV_VERSION_INT(a, b, c) ((a)<<16 | (b)<<8 /
+AV_VERSION_MAJOR	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/version.h	/^#define AV_VERSION_MAJOR(a) ((a) >> 16)$/
+AV_VERSION_MICRO	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/version.h	/^#define AV_VERSION_MICRO(a) ((a) & 0xFF)$/
+AV_VERSION_MINOR	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/version.h	/^#define AV_VERSION_MINOR(a) (((a) & 0x00FF00) >> 8/
+AV_WB	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#   define AV_WB(s, p, v) AV_WN##s(p, v)$/
+AV_WB16	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#       define AV_WB16(p, v) AV_WN16(p, v)$/
+AV_WB24	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#       define AV_WB24(p, v) AV_WN24(p, v)$/
+AV_WB32	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#       define AV_WB32(p, v) AV_WN32(p, v)$/
+AV_WB48	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#       define AV_WB48(p, v) AV_WN48(p, v)$/
+AV_WB64	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#       define AV_WB64(p, v) AV_WN64(p, v)$/
+AV_WB8	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#define AV_WB8(p, d)  do { ((uint8_t*)(p))[0] = (d/
+AV_WL	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#   define AV_WL(s, p, v) AV_WN##s(p, av_bswap##s(/
+AV_WL16	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#       define AV_WL16(p, v) AV_WN16(p, v)$/
+AV_WL24	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#       define AV_WL24(p, v) AV_WN24(p, v)$/
+AV_WL32	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#       define AV_WL32(p, v) AV_WN32(p, v)$/
+AV_WL48	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#       define AV_WL48(p, v) AV_WN48(p, v)$/
+AV_WL64	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#       define AV_WL64(p, v) AV_WN64(p, v)$/
+AV_WL64A	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#   define AV_WL64A(p, v) AV_WLA(64, p, v)$/
+AV_WL8	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#define AV_WL8(p, d)  AV_WB8(p, d)$/
+AV_WLA	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#   define AV_WLA(s, p, v) AV_WN##s##A(p, av_bswap/
+AV_WN	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#   define AV_WN(s, p, v) AV_WB##s(p, v)$/
+AV_WN16	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#       define AV_WN16(p, v) AV_WB16(p, v)$/
+AV_WN16A	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#   define AV_WN16A(p, v) AV_WNA(16, p, v)$/
+AV_WN24	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#       define AV_WN24(p, v) AV_WB24(p, v)$/
+AV_WN32	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#       define AV_WN32(p, v) AV_WB32(p, v)$/
+AV_WN32A	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#   define AV_WN32A(p, v) AV_WNA(32, p, v)$/
+AV_WN48	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#       define AV_WN48(p, v) AV_WB48(p, v)$/
+AV_WN64	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#       define AV_WN64(p, v) AV_WB64(p, v)$/
+AV_WN64A	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#   define AV_WN64A(p, v) AV_WNA(64, p, v)$/
+AV_WNA	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#define AV_WNA(s, p, v) (((av_alias##s*)(p))->u##s/
+AV_ZERO	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#define AV_ZERO(n, d) (((av_alias##n*)(d))->u##n =/
+AV_ZERO128	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#   define AV_ZERO128(d)         \\$/
+AV_ZERO16	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#   define AV_ZERO16(d) AV_ZERO(16, d)$/
+AV_ZERO32	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#   define AV_ZERO32(d) AV_ZERO(32, d)$/
+AV_ZERO64	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^#   define AV_ZERO64(d) AV_ZERO(64, d)$/
+DCTContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/avfft.h	/^typedef struct DCTContext DCTContext;$/
+DCTTransformType	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/avfft.h	/^enum DCTTransformType {$/
+DiracParseCodes	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/dirac.h	/^enum DiracParseCodes {$/
+DiracVersionInfo	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/dirac.h	/^} DiracVersionInfo;$/
+FFABS	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^#define FFABS(a) ((a) >= 0 ? (a) : (-(a)))$/
+FFABS64U	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^#define FFABS64U(a) ((a) <= 0 ? -(uint64_t)(a) : (/
+FFABSU	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^#define FFABSU(a) ((a) <= 0 ? -(unsigned)(a) : (un/
+FFALIGN	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/macros.h	/^#define FFALIGN(x, a) (((x)+(a)-1)&~((a)-1))$/
+FFDIFFSIGN	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/macros.h	/^#define FFDIFFSIGN(x,y) (((x)>(y)) - ((x)<(y)))$/
+FFERRTAG	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/error.h	/^#define FFERRTAG(a, b, c, d) (-(int)MKTAG(a, b, c,/
+FFMAX	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/macros.h	/^#define FFMAX(a,b) ((a) > (b) ? (a) : (b))$/
+FFMAX3	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/macros.h	/^#define FFMAX3(a,b,c) FFMAX(FFMAX(a,b),c)$/
+FFMIN	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/macros.h	/^#define FFMIN(a,b) ((a) > (b) ? (b) : (a))$/
+FFMIN3	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/macros.h	/^#define FFMIN3(a,b,c) FFMIN(FFMIN(a,b),c)$/
+FFNABS	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^#define FFNABS(a) ((a) <= 0 ? (a) : (-(a)))$/
+FFSIGN	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^#define FFSIGN(a) ((a) > 0 ? 1 : -1)$/
+FFSWAP	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/macros.h	/^#define FFSWAP(type,a,b) do{type SWAP_tmp= b; b= a/
+FFTComplex	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/avfft.h	/^} FFTComplex;$/
+FFTContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/avfft.h	/^typedef struct FFTContext FFTContext;$/
+FFTSample	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/avfft.h	/^typedef float FFTSample;$/
+FFUDIV	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^#define FFUDIV(a,b) (((a)>0 ?(a):(a)-(b)+1) \/ (b)/
+FFUMOD	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^#define FFUMOD(a,b) ((a)-(b)*FFUDIV(a,b))$/
+FF_ARRAY_ELEMS	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/macros.h	/^#define FF_ARRAY_ELEMS(a) (sizeof(a) \/ sizeof((a)/
+FF_PAD_STRUCTURE	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/bprint.h	/^#define FF_PAD_STRUCTURE(name, size, ...) \\$/
+GET_UTF16	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^#define GET_UTF16(val, GET_16BIT, ERROR)\\$/
+GET_UTF8	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^#define GET_UTF8(val, GET_BYTE, ERROR)\\$/
+MKBETAG	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/macros.h	/^#define MKBETAG(a,b,c,d) ((d) | ((c) << 8) | ((b) /
+MKTAG	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/macros.h	/^#define MKTAG(a,b,c,d)   ((a) | ((b) << 8) | ((c) /
+PUT_UTF16	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^#define PUT_UTF16(val, tmp, PUT_16BIT)\\$/
+PUT_UTF8	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^#define PUT_UTF8(val, tmp, PUT_BYTE)\\$/
+RDFTContext	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/avfft.h	/^typedef struct RDFTContext RDFTContext;$/
+RDFTransformType	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/avfft.h	/^enum RDFTransformType {$/
+ROUNDED_DIV	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^#define ROUNDED_DIV(a,b) (((a)>=0 ? (a) + ((b)>>1)/
+RSHIFT	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^#define RSHIFT(a,b) ((a) > 0 ? ((a) + ((1<<(b))>>1/
+RcOverride	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/avcodec.h	/^} RcOverride;$/
+SwsFilter	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libswscale/swscale.h	/^} SwsFilter;$/
+SwsVector	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libswscale/swscale.h	/^} SwsVector;$/
+VdpBitstreamBuffer	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/vdpau.h	/^                               const VdpBitstreamB/
+__attribute__	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^union unaligned_64 { uint64_t l; } __attribute__((/
+av_adler32_update	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/adler32.h	/^AVAdler av_adler32_update(AVAdler adler, const uin/
+av_alias16	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^} av_alias av_alias16;$/
+av_alias32	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^} av_alias av_alias32;$/
+av_alias64	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^} av_alias av_alias64;$/
+av_alloc_size	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/mem.h	/^    #define av_alloc_size(...) __attribute__((allo/
+av_asprintf	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/avstring.h	/^char *av_asprintf(const char *fmt, ...) av_printf_/
+av_assert0	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/avassert.h	/^#define av_assert0(cond) do {                     /
+av_assert1	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/avassert.h	/^#define av_assert1(cond) av_assert0(cond)$/
+av_assert2	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/avassert.h	/^#define av_assert2(cond) av_assert0(cond)$/
+av_assert2_fpu	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/avassert.h	/^#define av_assert2_fpu() av_assert0_fpu()$/
+av_be2ne16	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/bswap.h	/^#define av_be2ne16(x) (x)$/
+av_be2ne32	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/bswap.h	/^#define av_be2ne32(x) (x)$/
+av_be2ne64	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/bswap.h	/^#define av_be2ne64(x) (x)$/
+av_bprintf	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/bprint.h	/^void av_bprintf(AVBPrint *buf, const char *fmt, ../
+av_bswap16	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/bswap.h	/^static av_always_inline av_const uint16_t av_bswap/
+av_bswap32	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/bswap.h	/^static av_always_inline av_const uint32_t av_bswap/
+av_bswap64	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/bswap.h	/^static inline uint64_t av_const av_bswap64(uint64_/
+av_builtin_constant_p	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/attributes.h	/^#    define av_builtin_constant_p(x) 0$/
+av_ceil_log2_c	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^static av_always_inline av_const int av_ceil_log2_/
+av_clip64_c	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^static av_always_inline av_const int64_t av_clip64/
+av_clip_c	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^static av_always_inline av_const int av_clip_c(int/
+av_clip_int16_c	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^static av_always_inline av_const int16_t av_clip_i/
+av_clip_int8_c	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^static av_always_inline av_const int8_t av_clip_in/
+av_clip_intp2_c	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^static av_always_inline av_const int av_clip_intp2/
+av_clip_uint16_c	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^static av_always_inline av_const uint16_t av_clip_/
+av_clip_uint8_c	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^static av_always_inline av_const uint8_t av_clip_u/
+av_clip_uintp2_c	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^static av_always_inline av_const unsigned av_clip_/
+av_clipd_c	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^static av_always_inline av_const double av_clipd_c/
+av_clipf_c	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^static av_always_inline av_const float av_clipf_c(/
+av_clipl_int32_c	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^static av_always_inline av_const int32_t av_clipl_/
+av_cmp_q	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/rational.h	/^static inline int av_cmp_q(AVRational a, AVRationa/
+av_crc	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/crc.h	/^uint32_t av_crc(const AVCRC *ctx, uint32_t crc,$/
+av_d2q	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/rational.h	/^AVRational av_d2q(double d, int max) av_const;$/
+av_double2int	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intfloat.h	/^static av_always_inline uint64_t av_double2int(dou/
+av_dovi_get_color	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/dovi_meta.h	/^av_dovi_get_color(const AVDOVIMetadata *data)$/
+av_dovi_get_header	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/dovi_meta.h	/^av_dovi_get_header(const AVDOVIMetadata *data)$/
+av_dovi_get_mapping	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/dovi_meta.h	/^av_dovi_get_mapping(const AVDOVIMetadata *data)$/
+av_err2str	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/error.h	/^#define av_err2str(errnum) \\$/
+av_fifo_peek2	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/fifo.h	/^static inline uint8_t *av_fifo_peek2(const AVFifoB/
+av_float2int	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intfloat.h	/^static av_always_inline uint32_t av_float2int(floa/
+av_get_detection_bbox	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/detection_bbox.h	/^av_get_detection_bbox(const AVDetectionBBoxHeader /
+av_image_copy2	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/imgutils.h	/^void av_image_copy2(uint8_t * const dst_data[4], c/
+av_int2double	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intfloat.h	/^static av_always_inline double av_int2double(uint6/
+av_int2float	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intfloat.h	/^static av_always_inline float av_int2float(uint32_/
+av_int_list_length_for_size	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/avutil.h	/^unsigned av_int_list_length_for_size(unsigned elsi/
+av_intfloat32	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intfloat.h	/^union av_intfloat32 {$/
+av_intfloat64	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intfloat.h	/^union av_intfloat64 {$/
+av_isgraph	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/avstring.h	/^static inline av_const int av_isgraph(int c)$/
+av_isspace	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/avstring.h	/^static inline av_const int av_isspace(int c)$/
+av_isxdigit	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/avstring.h	/^static inline av_const int av_isxdigit(int c)$/
+av_le2ne16	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/bswap.h	/^#define av_le2ne16(x) av_bswap16(x)$/
+av_le2ne32	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/bswap.h	/^#define av_le2ne32(x) av_bswap32(x)$/
+av_le2ne64	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/bswap.h	/^#define av_le2ne64(x) av_bswap64(x)$/
+av_lfg_get	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/lfg.h	/^static inline unsigned int av_lfg_get(AVLFG *c){$/
+av_log	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/log.h	/^void av_log(void *avcl, int level, const char *fmt/
+av_make_error_string	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/error.h	/^static inline char *av_make_error_string(char *err/
+av_make_q	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/rational.h	/^static inline AVRational av_make_q(int num, int de/
+av_malloc	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/mem.h	/^void *av_malloc(size_t size) av_malloc_attrib av_a/
+av_mlfg_get	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/lfg.h	/^static inline unsigned int av_mlfg_get(AVLFG *c){$/
+av_mod_uintp2_c	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^static av_always_inline av_const unsigned av_mod_u/
+av_mul_q	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/rational.h	/^AVRational av_mul_q(AVRational b, AVRational c) av/
+av_opt_set_int_list	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/opt.h	/^#define av_opt_set_int_list(obj, name, val, term, /
+av_parity_c	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^static av_always_inline av_const int av_parity_c(u/
+av_parse_ratio_quiet	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/parseutils.h	/^#define av_parse_ratio_quiet(rate, str, max) \\$/
+av_popcount64_c	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^static av_always_inline av_const int av_popcount64/
+av_popcount_c	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^static av_always_inline av_const int av_popcount_c/
+av_printf_format	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/attributes.h	/^#    define av_printf_format(fmtpos, attrpos) __at/
+av_q2d	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/rational.h	/^static inline double av_q2d(AVRational a){$/
+av_rescale	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/mathematics.h	/^int64_t av_rescale(int64_t a, int64_t b, int64_t c/
+av_sat_add32_c	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^static av_always_inline int av_sat_add32_c(int a, /
+av_sat_add64_c	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^static av_always_inline int64_t av_sat_add64_c(int/
+av_sat_dadd32_c	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^static av_always_inline int av_sat_dadd32_c(int a,/
+av_sat_dsub32_c	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^static av_always_inline int av_sat_dsub32_c(int a,/
+av_sat_sub32_c	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^static av_always_inline int av_sat_sub32_c(int a, /
+av_sat_sub64_c	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/common.h	/^static av_always_inline int64_t av_sat_sub64_c(int/
+av_strlcatf	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/avstring.h	/^size_t av_strlcatf(char *dst, size_t size, const c/
+av_tolower	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/avstring.h	/^static inline av_const int av_tolower(int c)$/
+av_toupper	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/avstring.h	/^static inline av_const int av_toupper(int c)$/
+av_ts2str	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/timestamp.h	/^#define av_ts2str(ts) av_ts_make_string((char[AV_T/
+av_ts2timestr	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/timestamp.h	/^#define av_ts2timestr(ts, tb) av_ts_make_time_stri/
+av_ts_make_string	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/timestamp.h	/^static inline char *av_ts_make_string(char *buf, i/
+av_ts_make_time_string	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/timestamp.h	/^static inline char *av_ts_make_time_string(char *b/
+av_uninit	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/attributes.h	/^#    define av_uninit(x) x=x$/
+av_uuid_copy	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/uuid.h	/^static inline void av_uuid_copy(AVUUID dest, const/
+av_uuid_equal	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/uuid.h	/^static inline int av_uuid_equal(const AVUUID uu1, /
+av_uuid_nil	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/uuid.h	/^static inline void av_uuid_nil(AVUUID uu)$/
+av_video_enc_params_block	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/video_enc_params.h	/^av_video_enc_params_block(AVVideoEncParams *par, u/
+av_video_hint_get_rect	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/video_hint.h	/^av_video_hint_get_rect(const AVVideoHint *hints, s/
+av_video_hint_rects	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/video_hint.h	/^av_video_hint_rects(const AVVideoHint *hints) {$/
+av_x_if_null	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/avutil.h	/^static inline void *av_x_if_null(const void *p, co/
+avio_printf	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavformat/avio.h	/^int avio_printf(AVIOContext *s, const char *fmt, ./
+avio_tell	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavformat/avio.h	/^static av_always_inline int64_t avio_tell(AVIOCont/
+data_size	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavformat/avformat.h	/^                                         void *dat/
+double	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/csp.h	/^typedef double (*av_csp_trc_function)(double);$/
+dxva_context	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavcodec/dxva2.h	/^struct dxva_context {$/
+options	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavformat/avformat.h	/^                              const AVIOInterruptC/
+stride	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/tx.h	/^typedef void (*av_tx_fn)(AVTXContext *s, void *out/
+stride2	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/pixelutils.h	/^                                    const uint8_t /
+unaligned_64	/opt/homebrew/Cellar/ffmpeg/6.1.1_3/include/libavutil/intreadwrite.h	/^union unaligned_64 { uint64_t l; } __attribute__((/
