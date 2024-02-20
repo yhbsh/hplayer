@@ -18,7 +18,8 @@ bool load_frame(const char *fp, int *w, int *h, unsigned char **buff) {
     return false;
   }
 
-  ret = av_find_best_stream(avformat_ctx, AVMEDIA_TYPE_VIDEO, -1, -1, NULL, 0);
+  const AVCodec *avcodec;
+  ret = av_find_best_stream(avformat_ctx, AVMEDIA_TYPE_VIDEO, -1, -1, &avcodec, 0);
   if (ret < 0) {
     fprintf(stderr, "[ERROR]: av_find_best_stream: %s\n", av_err2str(ret));
     return false;
@@ -26,7 +27,6 @@ bool load_frame(const char *fp, int *w, int *h, unsigned char **buff) {
 
   AVStream *vs = avformat_ctx->streams[ret];
   AVCodecParameters *avcodec_params = vs->codecpar;
-  const AVCodec *avcodec = avcodec_find_decoder(avcodec_params->codec_id);
   if (avcodec == NULL) {
     fprintf(stderr, "[ERROR]: avcodec_find_decoder: could not find decoder for %s codec\n", av_get_media_type_string(AVMEDIA_TYPE_VIDEO));
     return false;
