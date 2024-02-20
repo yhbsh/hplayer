@@ -1,4 +1,5 @@
 hplayer
 opengl
+ffprobe
 *.dSYM/
 build/
