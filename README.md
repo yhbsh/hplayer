@@ -4,7 +4,7 @@
 
 ## Demo
 
-https://github.com/yhbsh/ffmpeg_video_player/assets/86262467/06099b8c-a82c-48b3-b6c9-52cc3b332995
+https://github.com/yhbsh/ffmpeg_video_player/assets/86262467/d6067050-8b38-42c9-bc97-ceb23db415c4
 
 ## Build
 
