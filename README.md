@@ -11,6 +11,8 @@ https://github.com/yhbsh/ffmpeg_video_player/assets/86262467/06099b8c-a82c-48b3-
 ```zsh
 $ make
 ```
+
+opengl implementation is the most stable for now
 ```zsh
-./hplayer [file]
+./opengl [url]
 ```
