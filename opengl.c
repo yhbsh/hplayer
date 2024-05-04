@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
   AVFormatContext *format_context = NULL;
   int ret = avformat_open_input(&format_context, argv[1], NULL, NULL);
   ret = avformat_find_stream_info(format_context, NULL);
-  const AVStream *stream = format_context->streams[1];
+  const AVStream *stream = format_context->streams[0];
   enum AVCodecID codec_id = stream->codecpar->codec_id;
   const AVCodec *codec = avcodec_find_decoder(codec_id);
   AVCodecContext *codec_context = avcodec_alloc_context3(codec);

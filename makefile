@@ -1,10 +1,15 @@
+CFLAGS=-g3 `pkg-config --cflags glfw3 libavcodec libavformat sdl2 sdl2_image`
+LDFLAGS=`pkg-config --libs glfw3 libavcodec libavformat sdl2 sdl2_image` -framework opengl
+
+CC=clang
+
 all: ffprobe opengl hplayer
 
 hplayer: hplayer.c
-	cc -g3 hplayer.c -o hplayer -lavcodec -lavformat -lswscale -lsdl2
+	$(CC) $(CFLAGS) hplayer.c -o hplayer $(LDFLAGS)
 
 opengl: opengl.c
-	cc -g3 opengl.c -o opengl -lglfw3 -lglew -lavcodec -lavformat -lswscale -framework opengl -framework iokit -framework cocoa
+	$(CC) $(CFLAGS) opengl.c  -o opengl $(LDFLAGS)
 
 ffprobe: ffprobe.c
-	cc -g3 ffprobe.c -o ffprobe -lavcodec -lavformat
+	$(CC) $(CFLAGS) ffprobe.c -o ffprobe $(LDFLAGS)
