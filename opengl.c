@@ -1,19 +1,24 @@
-#include <GL/glew.h>
+#define GL_SILENCE_DEPRECATION
+#include <OpenGL/gl3.h>
 #include <GLFW/glfw3.h>
+
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 
-const char *vs =
+#include <stdio.h>
+#include <stdlib.h>
+
+const char *vert_src =
     "#version 410\n"
-    "layout (location = 0) in vec4 position;\n"
+    "layout (location = 0) in vec2 position;\n"
     "layout (location = 1) in vec2 texCoord;\n"
     "out vec2 texCoordVarying;\n"
     "void main() {\n"
-    "    gl_Position = position;\n"
+    "    gl_Position = vec4(position, 0.0, 1.0);\n"
     "    texCoordVarying = texCoord;\n"
     "}\n";
 
-const char *fs =
+const char *frag_src =
     "#version 410\n"
     "in vec2 texCoordVarying;\n"
     "uniform sampler2D textureY;\n"
@@ -32,27 +37,14 @@ const char *fs =
 
 int main(int argc, char *argv[]) {
   if (argc != 2) {
-    fprintf(stderr, "[USAGE]: ./main [url]");
+    fprintf(stderr, "[USAGE]: ./main [url]\n");
     return 1;
   }
 
-  int ret;
-  const int width = 960;
-  const int height = 540;
-
-  glfwInit();
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-  GLFWwindow *window = glfwCreateWindow(width, height, "Animated UV Pattern", NULL, NULL);
-  glfwMakeContextCurrent(window);
-  glewInit();
-  printf("renderer = %s\nversion = %s\n", glGetString(GL_RENDERER), glGetString(GL_VERSION));
-
   AVFormatContext *format_context = NULL;
-  ret = avformat_open_input(&format_context, argv[1], NULL, NULL);
+  int ret = avformat_open_input(&format_context, argv[1], NULL, NULL);
   ret = avformat_find_stream_info(format_context, NULL);
-  AVStream *stream = format_context->streams[1];
+  const AVStream *stream = format_context->streams[1];
   enum AVCodecID codec_id = stream->codecpar->codec_id;
   const AVCodec *codec = avcodec_find_decoder(codec_id);
   AVCodecContext *codec_context = avcodec_alloc_context3(codec);
@@ -61,45 +53,73 @@ int main(int argc, char *argv[]) {
   AVFrame *frame = av_frame_alloc();
   AVPacket packet;
 
-  GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-  glShaderSource(vertex_shader, 1, &vs, NULL);
-  glCompileShader(vertex_shader);
+  const int width = 960;
+  const int height = 540;
+
+  glfwInit();
+
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+
+  GLFWwindow *window = glfwCreateWindow(width, height, "Video", NULL, NULL);
+  glfwMakeContextCurrent(window);
+
+  const GLubyte* renderer = glGetString(GL_RENDERER);
+  const GLubyte* vendor = glGetString(GL_VENDOR);
+  const GLubyte* version = glGetString(GL_VERSION);
+  const GLubyte* glslVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
+  printf("Renderer: %s\nVendor: %s\nVersion: %s\nGLSL: %s\n", renderer, vendor, version, glslVersion);
+
+  GLuint vert = glCreateShader(GL_VERTEX_SHADER);
+  glShaderSource(vert, 1, &vert_src, NULL);
+  glCompileShader(vert);
   GLint status;
-  glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &status);
+  glGetShaderiv(vert, GL_COMPILE_STATUS, &status);
 
-  GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-  glShaderSource(fragment_shader, 1, &fs, NULL);
-  glCompileShader(fragment_shader);
+  GLuint frag = glCreateShader(GL_FRAGMENT_SHADER);
+  glShaderSource(frag, 1, &frag_src, NULL);
+  glCompileShader(frag);
 
-  GLuint program = glCreateProgram();
-  glAttachShader(program, vertex_shader);
-  glAttachShader(program, fragment_shader);
-  glLinkProgram(program);
-  glUseProgram(program);
+  GLuint prog = glCreateProgram();
+  glAttachShader(prog, vert);
+  glAttachShader(prog, frag);
+  glLinkProgram(prog);
+  glUseProgram(prog);
 
   GLuint textureY, textureU, textureV;
   glGenTextures(1, &textureY);
   glGenTextures(1, &textureV);
   glGenTextures(1, &textureU);
 
-  GLfloat vertices[] = {-1.0f, -1.0f, 1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f};
-  GLfloat texCoords[] = {0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f};
+  GLfloat vertices[] = {
+      // positions    // texture coords
+      -1.0,  1.0,     0.0, 0.0,
+      -1.0, -1.0,     0.0, 1.0,
+       1.0,  1.0,     1.0, 0.0,
+       1.0, -1.0,     1.0, 1.0,
+  };
 
-  GLuint VAO;
-  glGenVertexArrays(1, &VAO);
-  glBindVertexArray(VAO);
+  GLuint vao, vbo;
+  glGenVertexArrays(1, &vao);
+  glBindVertexArray(vao);
 
-  GLuint VBO;
-  glGenBuffers(1, &VBO);
-  glBindBuffer(GL_ARRAY_BUFFER, VBO);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices) + sizeof(texCoords), NULL, GL_STATIC_DRAW);
-  glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-  glBufferSubData(GL_ARRAY_BUFFER, sizeof(vertices), sizeof(texCoords), texCoords);
+  glGenBuffers(1, &vbo);
+  glBindBuffer(GL_ARRAY_BUFFER, vbo);
+  glBufferData(GL_ARRAY_BUFFER, 16 * sizeof(GLfloat), vertices, GL_STATIC_DRAW);
 
-  glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
-  glEnableVertexAttribArray(0);
-  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void *)sizeof(vertices));
-  glEnableVertexAttribArray(1);
+  GLuint positionAttrib = glGetAttribLocation(prog, "position");
+  glEnableVertexAttribArray(positionAttrib); 
+  glVertexAttribPointer(positionAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)0);
+
+  GLuint texCoordAttrib = glGetAttribLocation(prog, "texCoord");
+  glEnableVertexAttribArray(texCoordAttrib); 
+  glVertexAttribPointer(texCoordAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid*)(2 * sizeof(GLfloat)));
+
+  glUniform1i(glGetUniformLocation(prog, "textureY"), 0);
+  glUniform1i(glGetUniformLocation(prog, "textureU"), 1);
+  glUniform1i(glGetUniformLocation(prog, "textureV"), 2);
 
   while (!glfwWindowShouldClose(window)) {
     ret = av_read_frame(format_context, &packet);
@@ -117,30 +137,23 @@ int main(int argc, char *argv[]) {
       glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
       glClear(GL_COLOR_BUFFER_BIT);
 
-      // upload to gpu
       glActiveTexture(GL_TEXTURE0);
       glBindTexture(GL_TEXTURE_2D, textureY);
-      glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, frame->width, frame->height, 0, GL_RED,
-                   GL_UNSIGNED_BYTE, frame->data[0]);
+      glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, frame->width, frame->height, 0, GL_RED, GL_UNSIGNED_BYTE, frame->data[0]);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-      glUniform1i(glGetUniformLocation(program, "textureY"), 0);
 
       glActiveTexture(GL_TEXTURE1);
       glBindTexture(GL_TEXTURE_2D, textureU);
-      glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, frame->width / 2, frame->height / 2, 0, GL_RED,
-                   GL_UNSIGNED_BYTE, frame->data[1]);
+      glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, frame->width / 2, frame->height / 2, 0, GL_RED, GL_UNSIGNED_BYTE, frame->data[1]);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-      glUniform1i(glGetUniformLocation(program, "textureU"), 1);
 
       glActiveTexture(GL_TEXTURE2);
       glBindTexture(GL_TEXTURE_2D, textureV);
-      glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, frame->width / 2, frame->height / 2, 0, GL_RED,
-                   GL_UNSIGNED_BYTE, frame->data[2]);
+      glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, frame->width / 2, frame->height / 2, 0, GL_RED, GL_UNSIGNED_BYTE, frame->data[2]);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-      glUniform1i(glGetUniformLocation(program, "textureV"), 2);
 
       glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
@@ -151,6 +164,8 @@ int main(int argc, char *argv[]) {
     av_packet_unref(&packet);
   }
 
+  glfwDestroyWindow(window);
   glfwTerminate();
+
   return 0;
 }
