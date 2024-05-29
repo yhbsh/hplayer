@@ -63,7 +63,8 @@ int main(int argc, char *argv[]) {
 
     ret = SDL_Init(SDL_INIT_VIDEO);
     w   = SDL_CreateWindow("Hplayer", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1200, 800, 0);
-    SDL_SetWindowBordered(w, SDL_FALSE);
+    SDL_SetWindowResizable(w, SDL_TRUE);
+    SDL_SetWindowBordered(w, SDL_TRUE);
     r = SDL_CreateRenderer(w, -1, SDL_RENDERER_ACCELERATED);
 
     int       quit = 0;
