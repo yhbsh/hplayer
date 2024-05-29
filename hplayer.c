@@ -1,12 +1,8 @@
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 
-#include <SDL2/SDL_video.h>
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
-#include <libavutil/imgutils.h>
 
-#include <stdbool.h>
 #include <stdio.h>
 
 int main(int argc, char *argv[]) {
@@ -26,50 +22,58 @@ int main(int argc, char *argv[]) {
     AVFrame         *f      = NULL;
     AVPacket        *p      = NULL;
 
-    w = SDL_CreateWindow("Hplayer", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1200, 800, 0);
-    r = SDL_CreateRenderer(w, -1, 0);
-
+    ret = SDL_Init(SDL_INIT_VIDEO);
+    w   = SDL_CreateWindow("Hplayer", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1200, 800, 0);
+    r   = SDL_CreateRenderer(w, -1, 0);
     ret = avformat_open_input(&in_ctx, argv[1], NULL, NULL);
     ret = avformat_find_stream_info(in_ctx, NULL);
     vs  = av_find_best_stream(in_ctx, AVMEDIA_TYPE_VIDEO, 0, 0, &c, 0);
     s   = in_ctx->streams[vs];
     cc  = avcodec_alloc_context3(c);
+    ret = avcodec_parameters_to_context(cc, s->codecpar);
     ret = avcodec_open2(cc, c, NULL);
     f   = av_frame_alloc();
     p   = av_packet_alloc();
 
-    bool quit = false;
-    while (!quit) {
-        if (av_read_frame(in_ctx, p) < 0) quit = true;
+    int       quit = 0;
+    SDL_Event e;
 
-        avcodec_send_packet(cc, p);
-        while (avcodec_receive_frame(cc, f) == 0) {
-            SDL_Texture *texture = SDL_CreateTexture(r, SDL_PIXELFORMAT_IYUV, SDL_TEXTUREACCESS_STREAMING, f->width, f->height);
-
-            uint8_t  *yplane    = f->data[0];
-            const int ylinesize = f->linesize[0];
-            uint8_t  *uplane    = f->data[1];
-            const int ulinesize = f->linesize[1];
-            uint8_t  *vplane    = f->data[2];
-            const int vlinesize = f->linesize[2];
-
-            SDL_UpdateYUVTexture(texture, NULL, yplane, ylinesize, uplane, ulinesize, vplane, vlinesize);
-            SDL_RenderCopy(r, texture, NULL, NULL);
-            SDL_RenderPresent(r);
-        }
-
-        av_packet_unref(p);
-
-        SDL_Event event;
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
-                quit = true;
+    do {
+        while (SDL_PollEvent(&e)) {
+            if (e.type == SDL_QUIT) {
+                quit = 1;
                 break;
             }
         }
 
-        SDL_Delay(16);
-    }
+        ret = av_read_frame(in_ctx, p);
+        if (ret < 0) break;
+
+        if (p->stream_index != s->index) continue;
+
+        ret = avcodec_send_packet(cc, p);
+        if (ret < 0) {
+            fprintf(stderr, "[ERROR]: avcodec_send_packet(cc, p): %s\n", av_err2str(ret));
+            return 1;
+        }
+
+        while (ret >= 0) {
+            ret = avcodec_receive_frame(cc, f);
+            if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF) break;
+            if (ret < 0) {
+                fprintf(stderr, "[ERROR]: avcodec_receive_frame(cc, f): %s\n", av_err2str(ret));
+                return 1;
+            }
+
+            SDL_Texture *t = SDL_CreateTexture(r, SDL_PIXELFORMAT_IYUV, SDL_TEXTUREACCESS_STREAMING, f->width, f->height);
+            SDL_UpdateYUVTexture(t, NULL, f->data[0], f->linesize[0], f->data[1], f->linesize[1], f->data[2], f->linesize[2]);
+            SDL_RenderCopy(r, t, NULL, NULL);
+            SDL_RenderPresent(r);
+            SDL_DestroyTexture(t);
+        }
+
+        av_packet_unref(p);
+    } while (!quit);
 
     av_frame_free(&f);
     av_packet_free(&p);
