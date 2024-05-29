@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "[ERROR]: avformat_find_stream_info(int_ctx, NULL): %s\n", av_err2str(ret));
         return 1;
     }
-    vs  = av_find_best_stream(in_ctx, AVMEDIA_TYPE_VIDEO, -1, -1, &c, 0);
+    vs = av_find_best_stream(in_ctx, AVMEDIA_TYPE_VIDEO, -1, -1, &c, 0);
     if (vs < 0) {
         fprintf(stderr, "[ERROR]: av_find_best_stream(in_ctx, AVMEDIA_TYPE_VIDEO, 0, 0, &c, 0): %s\n", av_err2str(vs));
         return 1;
@@ -53,12 +53,12 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "[ERROR]: avcodec_open2(cc, c, NULL): %s\n", av_err2str(ret));
         return 1;
     }
-    f   = av_frame_alloc();
+    f = av_frame_alloc();
     if (f == NULL) {
         fprintf(stderr, "[ERROR]: av_frame_alloc()\n");
         return 1;
     }
-    p   = av_packet_alloc();
+    p = av_packet_alloc();
     if (p == NULL) {
         fprintf(stderr, "[ERROR]: av_packet_alloc()\n");
         return 1;

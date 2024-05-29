@@ -4,22 +4,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
 int main(int argc, char *argv[]) {
     if (argc != 2) {
         fprintf(stderr, "[USAGE]: ./main <file.h264>\n");
         return 1;
     }
 
-    AVPacket             *p    = av_packet_alloc();
-    AVFrame              *f    = av_frame_alloc();
-    const AVCodec        *c    = avcodec_find_decoder(AV_CODEC_ID_H264);
-    AVCodecParserContext *cpc  = av_parser_init(c->id);
-    AVCodecContext       *cc   = avcodec_alloc_context3(c);
+    AVPacket             *p   = av_packet_alloc();
+    AVFrame              *f   = av_frame_alloc();
+    const AVCodec        *c   = avcodec_find_decoder(AV_CODEC_ID_H264);
+    AVCodecParserContext *cpc = av_parser_init(c->id);
+    AVCodecContext       *cc  = avcodec_alloc_context3(c);
     avcodec_open2(cc, c, NULL);
 
     if (!p || !c || !cpc || !cc) return 1;
-
 
     FILE *file = fopen(argv[1], "rb");
 
@@ -56,7 +54,6 @@ int main(int argc, char *argv[]) {
             av_packet_unref(p);
         }
     }
-
 
 clean:
     free(buffer);
