@@ -12,7 +12,8 @@ https://github.com/yhbsh/Hplayer/assets/86262467/69ffc5ee-13d1-41ce-8797-aeacfe2
 $ make
 ```
 
-opengl implementation is the most stable for now
 ```zsh
-./opengl [url]
+./hplayer [url]
+./opengl  [url]
+./parse   [url]
 ```
