@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
     ret                     = avformat_open_input(&in_ctx, argv[1], NULL, NULL);
     ret                     = avformat_find_stream_info(in_ctx, NULL);
     const AVCodec  *c       = NULL;
-    int             vs      = av_find_best_stream(in_ctx, AVMEDIA_TYPE_VIDEO, 0, 0, &c, 0);
+    int             vs      = av_find_best_stream(in_ctx, AVMEDIA_TYPE_VIDEO, -1, -1, &c, 0);
     const AVStream *s       = in_ctx->streams[vs];
     AVCodecContext *cc      = avcodec_alloc_context3(c);
     ret                     = avcodec_parameters_to_context(cc, s->codecpar);
@@ -61,7 +61,8 @@ int main(int argc, char *argv[]) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
+    glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
 
     GLFWwindow *window = glfwCreateWindow(width, height, "Video", NULL, NULL);
     glfwMakeContextCurrent(window);
