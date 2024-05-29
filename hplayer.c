@@ -14,6 +14,7 @@ int main(int argc, char *argv[]) {
     int              ret    = -1;
     SDL_Window      *w      = NULL;
     SDL_Renderer    *r      = NULL;
+    SDL_Texture     *t      = NULL;
     AVFormatContext *in_ctx = NULL;
     const AVCodec   *c      = NULL;
     AVCodecContext  *cc     = NULL;
@@ -22,10 +23,6 @@ int main(int argc, char *argv[]) {
     AVFrame         *f      = NULL;
     AVPacket        *p      = NULL;
 
-    ret = SDL_Init(SDL_INIT_VIDEO);
-    w   = SDL_CreateWindow("Hplayer", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1200, 800, 0);
-    SDL_SetWindowBordered(w, SDL_FALSE);
-    r   = SDL_CreateRenderer(w, -1, 0);
     ret = avformat_open_input(&in_ctx, argv[1], NULL, NULL);
     if (ret < 0) {
         fprintf(stderr, "[ERROR]: avformat_open_input(&in_ctx, argv[1], NULL, NULL): %s\n", av_err2str(ret));
@@ -64,6 +61,11 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    ret = SDL_Init(SDL_INIT_VIDEO);
+    w   = SDL_CreateWindow("Hplayer", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1200, 800, 0);
+    SDL_SetWindowBordered(w, SDL_FALSE);
+    r = SDL_CreateRenderer(w, -1, SDL_RENDERER_ACCELERATED);
+
     int       quit = 0;
     SDL_Event e;
 
@@ -94,14 +96,17 @@ int main(int argc, char *argv[]) {
                 return 1;
             }
 
-            SDL_Texture *t = SDL_CreateTexture(r, SDL_PIXELFORMAT_IYUV, SDL_TEXTUREACCESS_STREAMING, f->width, f->height);
+            if (t == NULL) {
+                t = SDL_CreateTexture(r, SDL_PIXELFORMAT_IYUV, SDL_TEXTUREACCESS_STREAMING, f->width, f->height);
+            }
             SDL_UpdateYUVTexture(t, NULL, f->data[0], f->linesize[0], f->data[1], f->linesize[1], f->data[2], f->linesize[2]);
+            SDL_RenderClear(r);
             SDL_RenderCopy(r, t, NULL, NULL);
             SDL_RenderPresent(r);
-            SDL_DestroyTexture(t);
         }
 
         av_packet_unref(p);
+
     } while (!quit);
 
     av_frame_free(&f);
