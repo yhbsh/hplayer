@@ -66,6 +66,7 @@ int main(int argc, char *argv[]) {
 
     GLFWwindow *window = glfwCreateWindow(width, height, "Video", NULL, NULL);
     glfwMakeContextCurrent(window);
+    glfwSwapInterval(0);
 
     const GLubyte *renderer    = glGetString(GL_RENDERER);
     const GLubyte *vendor      = glGetString(GL_VENDOR);
