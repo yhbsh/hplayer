@@ -24,16 +24,45 @@ int main(int argc, char *argv[]) {
 
     ret = SDL_Init(SDL_INIT_VIDEO);
     w   = SDL_CreateWindow("Hplayer", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1200, 800, 0);
+    SDL_SetWindowBordered(w, SDL_FALSE);
     r   = SDL_CreateRenderer(w, -1, 0);
     ret = avformat_open_input(&in_ctx, argv[1], NULL, NULL);
+    if (ret < 0) {
+        fprintf(stderr, "[ERROR]: avformat_open_input(&in_ctx, argv[1], NULL, NULL): %s\n", av_err2str(ret));
+        return 1;
+    }
     ret = avformat_find_stream_info(in_ctx, NULL);
-    vs  = av_find_best_stream(in_ctx, AVMEDIA_TYPE_VIDEO, 0, 0, &c, 0);
+    if (ret < 0) {
+        fprintf(stderr, "[ERROR]: avformat_find_stream_info(int_ctx, NULL): %s\n", av_err2str(ret));
+        return 1;
+    }
+    vs  = av_find_best_stream(in_ctx, AVMEDIA_TYPE_VIDEO, -1, -1, &c, 0);
+    if (vs < 0) {
+        fprintf(stderr, "[ERROR]: av_find_best_stream(in_ctx, AVMEDIA_TYPE_VIDEO, 0, 0, &c, 0): %s\n", av_err2str(vs));
+        return 1;
+    }
     s   = in_ctx->streams[vs];
     cc  = avcodec_alloc_context3(c);
     ret = avcodec_parameters_to_context(cc, s->codecpar);
+    if (ret < 0) {
+        fprintf(stderr, "[ERROR]: avcodec_parameters_to_context(cc, s->codecpar): %s\n", av_err2str(ret));
+        return 1;
+    }
     ret = avcodec_open2(cc, c, NULL);
+    if (ret < 0) {
+        fprintf(stderr, "[ERROR]: avcodec_open2(cc, c, NULL): %s\n", av_err2str(ret));
+        return 1;
+    }
     f   = av_frame_alloc();
+    if (f == NULL) {
+        fprintf(stderr, "[ERROR]: av_frame_alloc()\n");
+        return 1;
+    }
     p   = av_packet_alloc();
+    if (p == NULL) {
+        fprintf(stderr, "[ERROR]: av_packet_alloc()\n");
+        return 1;
+    }
 
     int       quit = 0;
     SDL_Event e;
