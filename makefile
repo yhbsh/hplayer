@@ -1,4 +1,4 @@
-CFLAGS=-g3 `pkg-config --cflags glfw3 libavcodec libavformat sdl2 sdl2_image`
+CFLAGS=-O3 `pkg-config --cflags glfw3 libavcodec libavformat sdl2 sdl2_image`
 LDFLAGS=`pkg-config --libs glfw3 libavcodec libavformat sdl2 sdl2_image` -framework opengl
 
 CC=clang
