@@ -40,6 +40,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    av_log_set_level(AV_LOG_TRACE);
     int              ret;
     AVFormatContext *in_ctx = NULL;
     ret                     = avformat_open_input(&in_ctx, argv[1], NULL, NULL);
