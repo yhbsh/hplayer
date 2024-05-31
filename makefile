@@ -1,18 +1,19 @@
-CFLAGS=-O3 `pkg-config --cflags glfw3 libavcodec libavformat sdl2`
-LDFLAGS=`pkg-config --libs glfw3 libavcodec libavformat sdl2` -framework opengl
+CC         := clang
+LIBRARIES  := glfw3 libavcodec libavformat libavutil SDL2
+FRAMEWORKS := -framework OpenGL
 
-CC=clang
+CFLAGS  := -Os
+CFLAGS  := $(shell pkg-config --cflags $(LIBRARIES)) $(CFLAGS)
+LDFLAGS := $(shell pkg-config --libs $(LIBRARIES)) $(FRAMEWORKS)
 
-all: ffprobe opengl hplayer parse
+TARGETS := ffprobe opengl hplayer parse
 
-hplayer: hplayer.c
-	$(CC) $(CFLAGS) hplayer.c -o hplayer $(LDFLAGS)
+all: $(TARGETS)
 
-opengl: opengl.c
-	$(CC) $(CFLAGS) opengl.c  -o opengl $(LDFLAGS)
+%: %.c
+	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS)
 
-ffprobe: ffprobe.c
-	$(CC) $(CFLAGS) ffprobe.c -o ffprobe $(LDFLAGS)
+clean:
+	rm -f $(TARGETS)
 
-parse: parse.c
-	$(CC) $(CFLAGS) parse.c -o parse $(LDFLAGS)
+.PHONY: all
