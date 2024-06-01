@@ -1,12 +1,12 @@
 CC         := clang
-LIBRARIES  := glfw3 libavcodec libavformat libavutil SDL2
+LIBRARIES  := glfw3 SDL2 libavcodec libavformat libavutil libswscale libavdevice
 FRAMEWORKS := -framework OpenGL
 
 CFLAGS  := -Os
 CFLAGS  := $(shell pkg-config --cflags $(LIBRARIES)) $(CFLAGS)
 LDFLAGS := $(shell pkg-config --libs $(LIBRARIES)) $(FRAMEWORKS)
 
-TARGETS := ffprobe opengl hplayer parse
+TARGETS := ffprobe opengl hplayer parse rtsp
 
 all: $(TARGETS)
 

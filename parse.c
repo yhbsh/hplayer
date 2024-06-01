@@ -11,15 +11,15 @@ int main(int argc, char *argv[]) {
     }
 
     av_log_set_level(AV_LOG_TRACE);
-    AVPacket             *in_packet   = av_packet_alloc();
-    AVFrame              *in_frame   = av_frame_alloc();
-    const AVCodec        *in_codec   = avcodec_find_decoder(AV_CODEC_ID_HEVC);
+    AVPacket      *in_packet = av_packet_alloc();
+    AVFrame       *in_frame  = av_frame_alloc();
+    const AVCodec *in_codec  = avcodec_find_decoder(AV_CODEC_ID_HEVC);
     if (!in_codec) {
         fprintf(stderr, "[ERROR]: codec does not exist\n");
         return 1;
     }
     AVCodecParserContext *in_codec_parser_ctx = av_parser_init(in_codec->id);
-    AVCodecContext       *in_codec_ctx  = avcodec_alloc_context3(in_codec);
+    AVCodecContext       *in_codec_ctx        = avcodec_alloc_context3(in_codec);
     avcodec_open2(in_codec_ctx, in_codec, NULL);
     int ret = -1;
 
