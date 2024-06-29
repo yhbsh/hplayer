@@ -1,19 +1,37 @@
-CC         := clang
-LIBRARIES  := glfw3 SDL2 libavcodec libavformat libavutil libswscale libavdevice
-FRAMEWORKS := -framework OpenGL
+CC     := clang
+CFLAGS := $(shell pkg-config --static --cflags libavformat libavcodec glfw3)
+CFLAGS += -Ofast -march=native -mtune=native -flto
+CFLAGS += -ffast-math -funroll-loops -fomit-frame-pointer
+CFLAGS += -DGL_SILENCE_DEPRECATION
+SRCDIR   := src
+INCDIR   := include
+BUILDDIR := build
+BINDIR   := bin
+CFLAGS += -I$(INCDIR)
+LDFLAGS := $(shell pkg-config --static --libs libavformat libavcodec glfw3)
+LDFLAGS += -framework OpenGL -flto
+SRCS := $(wildcard $(SRCDIR)/*.c)
+OBJS := $(patsubst $(SRCDIR)/%.c,$(BUILDDIR)/%.o,$(SRCS))
+EXEC := $(BINDIR)/main
 
-CFLAGS  := -Os
-CFLAGS  := $(shell pkg-config --cflags $(LIBRARIES)) $(CFLAGS)
-LDFLAGS := $(shell pkg-config --libs $(LIBRARIES)) $(FRAMEWORKS)
+.PHONY: all clean directories
 
-TARGETS := ffprobe opengl hplayer parse rtsp
+all: directories $(EXEC)
 
-all: $(TARGETS)
+directories:
+	@mkdir -p $(BUILDDIR) $(BINDIR)
 
-%: %.c
-	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS)
+$(EXEC): $(OBJS)
+	$(CC) $(OBJS) -o $@ $(LDFLAGS)
+
+$(BUILDDIR)/%.o: $(SRCDIR)/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(TARGETS)
+	rm -rf $(BUILDDIR) $(BINDIR)
 
-.PHONY: all
+-include $(OBJS:.o=.d)
+
+$(BUILDDIR)/%.d: $(SRCDIR)/%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -MM -MT $(@:.d=.o) $< > $@

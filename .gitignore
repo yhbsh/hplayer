@@ -1,8 +1,4 @@
-hplayer
-opengl
-ffprobe
-parse
-rtsp
 *.dSYM/
-build/
 .cache/
+bin/
+build/
