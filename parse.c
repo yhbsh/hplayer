@@ -1,69 +1,57 @@
 #include <libavcodec/avcodec.h>
-#include <libavutil/pixdesc.h>
 
 #include <stdio.h>
 #include <stdlib.h>
 
 int main(int argc, char *argv[]) {
     if (argc != 2) {
-        fprintf(stderr, "[USAGE]: ./main <file.h264 | file.hevc>\n");
+        fprintf(stderr, "[USAGE]: ./main <file.hevc>\n");
         return 1;
     }
 
     av_log_set_level(AV_LOG_TRACE);
-    AVPacket      *in_packet = av_packet_alloc();
-    AVFrame       *in_frame  = av_frame_alloc();
-    const AVCodec *in_codec  = avcodec_find_decoder(AV_CODEC_ID_HEVC);
-    if (!in_codec) {
-        fprintf(stderr, "[ERROR]: codec does not exist\n");
-        return 1;
-    }
-    AVCodecParserContext *in_codec_parser_ctx = av_parser_init(in_codec->id);
-    AVCodecContext       *in_codec_ctx        = avcodec_alloc_context3(in_codec);
-    avcodec_open2(in_codec_ctx, in_codec, NULL);
-    int ret = -1;
+    const AVCodec *codec = avcodec_find_decoder(AV_CODEC_ID_HEVC);
+    AVCodecContext *codec_context = avcodec_alloc_context3(codec);
+    int ret = avcodec_open2(codec_context, codec, NULL);
+    AVCodecParserContext *parser_context = av_parser_init(codec->id);
 
     FILE *file = fopen(argv[1], "rb");
-
     fseek(file, 0, SEEK_END);
     uint64_t file_size = ftell(file);
     fseek(file, 0, SEEK_SET);
 
-    printf("File size: %lld\n", file_size);
-
-    uint8_t *buffer = malloc(file_size);
-
-    fread(buffer, 1, file_size, file);
+    uint8_t *file_buffer = av_malloc(file_size + AV_INPUT_BUFFER_PADDING_SIZE);
+    fread(file_buffer, 1, file_size, file);
     fclose(file);
 
-    uint8_t *data           = buffer;
-    uint64_t remaining_size = file_size;
+    AVPacket *packet = av_packet_alloc();
+    AVFrame *frame = av_frame_alloc();
 
-    while (remaining_size > 0) {
-        int parse_size = av_parser_parse2(in_codec_parser_ctx, in_codec_ctx, &in_packet->data, &in_packet->size, data, remaining_size, AV_NOPTS_VALUE, AV_NOPTS_VALUE, 0);
+    uint8_t *data = file_buffer;
+    int data_size = file_size;
 
-        data += parse_size;
-        remaining_size -= parse_size;
+    while (data_size > 0) {
+        ret        = av_parser_parse2(parser_context, codec_context, &packet->data, &packet->size, data, data_size, AV_NOPTS_VALUE, AV_NOPTS_VALUE, 0);
+        data      += ret;
+        data_size -= ret;
 
-        if (in_packet->size) {
-
-            ret = avcodec_send_packet(in_codec_ctx, in_packet);
-            while (ret >= 0) {
-                ret = avcodec_receive_frame(in_codec_ctx, in_frame);
-                if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF) break;
-
-                printf("Frame %6lld: width = %d, height = %d, format = %s\n", in_codec_ctx->frame_num, in_frame->width, in_frame->height, av_get_pix_fmt_name(in_frame->format));
+        if (packet->size) {
+            printf("packet->size: %10d\n", packet->size);
+            while (avcodec_send_packet(codec_context, packet) >= 0) {
+                ret = avcodec_receive_frame(codec_context, frame);
+                if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF) {
+                    break;
+                }
+                printf("%-5lld frame->width %5d - frame->height %5d\n", codec_context->frame_num, frame->width, frame->height);
             }
-
-            av_packet_unref(in_packet);
         }
     }
 
-clean:
-    free(buffer);
-    avcodec_free_context(&in_codec_ctx);
-    av_parser_close(in_codec_parser_ctx);
-    av_packet_free(&in_packet);
+    av_packet_free(&packet);
+    av_free(file_buffer);
+    av_parser_close(parser_context);
+    avcodec_free_context(&codec_context);
 
     return 0;
 }
+
