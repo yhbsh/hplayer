@@ -16,6 +16,9 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    int64_t start_time = av_gettime_relative();
+    int64_t pts_time   = 0;
+
     while (glfwWindowShouldClose(p_engine->window) == 0) {
         ret = av_read_frame(p_engine->format_context, p_engine->packet);
 
@@ -31,6 +34,15 @@ int main(int argc, char *argv[]) {
             do {
                 ret = avcodec_receive_frame(p_engine->video_codec_context, p_engine->frame);
                 if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF) break;
+
+                int64_t pts = p_engine->frame->best_effort_timestamp;
+                if (pts == AV_NOPTS_VALUE) pts = 0;
+                pts_time             = av_rescale_q(pts, p_engine->video_stream->time_base, AV_TIME_BASE_Q);
+                int64_t current_time = av_gettime_relative() - start_time;
+                int64_t delay        = (pts_time - current_time);
+
+                printf("Delay: %lld\n", delay);
+                if (delay > 0) av_usleep(delay);
 
                 glClear(GL_COLOR_BUFFER_BIT);
 
