@@ -13,7 +13,7 @@ AllowShortFunctionsOnASingleLine: None  # Always break function definitions onto
 AlignConsecutiveAssignments: true  # Align consecutive assignments
 
 # Line length
-ColumnLimit: 200  # Maximum line length before wrapping
+ColumnLimit: 300  # Maximum line length before wrapping
 
 # Sort Includes
 SortIncludes: Never
