@@ -1,6 +1,41 @@
 #include <stdio.h>
+#include <sys/wait.h>
 
 #include "pl.h"
+
+void draw_frame(PL_Engine *pl_engine) {
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, pl_engine->textures[0]);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, pl_engine->frame->width, pl_engine->frame->height, 0, GL_RED, GL_UNSIGNED_BYTE, pl_engine->frame->data[0]);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, pl_engine->textures[1]);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, pl_engine->frame->width / 2, pl_engine->frame->height / 2, 0, GL_RED, GL_UNSIGNED_BYTE, pl_engine->frame->data[1]);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, pl_engine->textures[2]);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, pl_engine->frame->width / 2, pl_engine->frame->height / 2, 0, GL_RED, GL_UNSIGNED_BYTE, pl_engine->frame->data[2]);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+}
+
+void delay_pts(PL_Engine *pl_engine) {
+    int64_t pts = pl_engine->frame->best_effort_timestamp;
+    if (pts == AV_NOPTS_VALUE) pts = 0;
+    pl_engine->pts_time  = av_rescale_q(pts, pl_engine->video_stream->time_base, AV_TIME_BASE_Q);
+    int64_t current_time = av_gettime_relative() - pl_engine->start_time;
+    int64_t delay        = (pl_engine->pts_time - current_time);
+
+    if (delay > 0) av_usleep(delay);
+}
 
 int main(int argc, char *argv[]) {
     if (argc != 2) {
@@ -9,72 +44,45 @@ int main(int argc, char *argv[]) {
     }
 
     int ret;
-    PlayerEngine *p_engine = NULL;
+    PL_Engine *pl_engine = NULL;
 
-    if ((ret = pl_engine_init(&p_engine, argv[1])) < 0) {
+    if ((ret = pl_engine_init(&pl_engine, argv[1])) < 0) {
         fprintf(stderr, "[ERROR]: init_engine(): %s\n", av_err2str(ret));
         return 1;
     }
 
-    int64_t start_time = av_gettime_relative();
-    int64_t pts_time   = 0;
-
-    while (glfwWindowShouldClose(p_engine->window) == 0) {
-        ret = av_read_frame(p_engine->format_context, p_engine->packet);
+    while (glfwWindowShouldClose(pl_engine->window) == 0) {
+        ret = av_read_frame(pl_engine->format_context, pl_engine->packet);
 
         if (ret == AVERROR(EAGAIN)) continue;
         if (ret == AVERROR_EOF) break;
 
-        if (p_engine->video_stream && p_engine->packet->stream_index == p_engine->video_stream->index) {
-            if ((ret = avcodec_send_packet(p_engine->video_codec_context, p_engine->packet)) < 0) {
-                fprintf(stderr, "[ERROR]: avcodec_send_packet(): %s\n", av_err2str(ret));
-                return 1;
-            };
+        /* Non-Video Frame */
+        if (pl_engine->packet->stream_index != pl_engine->video_stream->index) continue;
 
-            do {
-                ret = avcodec_receive_frame(p_engine->video_codec_context, p_engine->frame);
-                if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF) break;
+        ret = avcodec_send_packet(pl_engine->video_codec_context, pl_engine->packet);
+        if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF) continue;
 
-                int64_t pts = p_engine->frame->best_effort_timestamp;
-                if (pts == AV_NOPTS_VALUE) pts = 0;
-                pts_time             = av_rescale_q(pts, p_engine->video_stream->time_base, AV_TIME_BASE_Q);
-                int64_t current_time = av_gettime_relative() - start_time;
-                int64_t delay        = (pts_time - current_time);
+        if (ret < 0) {
+            fprintf(stderr, "[ERROR]: avcodec_send_packet(): %s\n", av_err2str(ret));
+            return 1;
+        };
 
-                printf("Delay: %lld\n", delay);
-                if (delay > 0) av_usleep(delay);
+        while (ret >= 0) {
+            ret = avcodec_receive_frame(pl_engine->video_codec_context, pl_engine->frame);
+            if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF) break;
 
-                glClear(GL_COLOR_BUFFER_BIT);
+            delay_pts(pl_engine);
+            draw_frame(pl_engine);
 
-                glActiveTexture(GL_TEXTURE0);
-                glBindTexture(GL_TEXTURE_2D, p_engine->textures[0]);
-                glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, p_engine->frame->width, p_engine->frame->height, 0, GL_RED, GL_UNSIGNED_BYTE, p_engine->frame->data[0]);
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-                glActiveTexture(GL_TEXTURE1);
-                glBindTexture(GL_TEXTURE_2D, p_engine->textures[1]);
-                glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, p_engine->frame->width / 2, p_engine->frame->height / 2, 0, GL_RED, GL_UNSIGNED_BYTE, p_engine->frame->data[1]);
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-                glActiveTexture(GL_TEXTURE2);
-                glBindTexture(GL_TEXTURE_2D, p_engine->textures[2]);
-                glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, p_engine->frame->width / 2, p_engine->frame->height / 2, 0, GL_RED, GL_UNSIGNED_BYTE, p_engine->frame->data[2]);
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-                glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-
-                glfwPollEvents();
-                glfwSwapBuffers(p_engine->window);
-            } while (ret >= 0);
+            glfwPollEvents();
+            glfwSwapBuffers(pl_engine->window);
         }
 
-        av_packet_unref(p_engine->packet);
+        av_packet_unref(pl_engine->packet);
     }
 
-    pl_engine_deinit(&p_engine);
+    pl_engine_deinit(&pl_engine);
 
     return 0;
 }

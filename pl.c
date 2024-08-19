@@ -1,43 +1,43 @@
 #include "pl.h"
 
-int init_ffmpeg(PlayerEngine *p_engine, const char *url) {
+int init_ffmpeg(PL_Engine *pl_engine, const char *url) {
     int ret;
     av_log_set_level(AV_LOG_DEBUG);
 
-    if ((ret = avformat_open_input(&p_engine->format_context, url, NULL, NULL)) < 0) return ret;
-    if ((ret = avformat_find_stream_info(p_engine->format_context, NULL)) < 0) return ret;
+    if ((ret = avformat_open_input(&pl_engine->format_context, url, NULL, NULL)) < 0) return ret;
+    if ((ret = avformat_find_stream_info(pl_engine->format_context, NULL)) < 0) return ret;
 
     const AVCodec *video_codec = NULL;
     const AVCodec *audio_codec = NULL;
 
-    ret = av_find_best_stream(p_engine->format_context, AVMEDIA_TYPE_VIDEO, -1, -1, &video_codec, 0);
+    ret = av_find_best_stream(pl_engine->format_context, AVMEDIA_TYPE_VIDEO, -1, -1, &video_codec, 0);
     if (ret >= 0) {
-        if (!(p_engine->video_stream = p_engine->format_context->streams[ret])) return AVERROR(ENOMEM);
-        if (!(p_engine->video_codec_context = avcodec_alloc_context3(video_codec))) return AVERROR(ENOMEM);
-        if ((ret = avcodec_parameters_to_context(p_engine->video_codec_context, p_engine->video_stream->codecpar)) < 0) return ret;
-        if ((ret = avcodec_open2(p_engine->video_codec_context, video_codec, NULL)) < 0) return ret;
+        if (!(pl_engine->video_stream = pl_engine->format_context->streams[ret])) return AVERROR(ENOMEM);
+        if (!(pl_engine->video_codec_context = avcodec_alloc_context3(video_codec))) return AVERROR(ENOMEM);
+        if ((ret = avcodec_parameters_to_context(pl_engine->video_codec_context, pl_engine->video_stream->codecpar)) < 0) return ret;
+        if ((ret = avcodec_open2(pl_engine->video_codec_context, video_codec, NULL)) < 0) return ret;
     }
 
-    ret = av_find_best_stream(p_engine->format_context, AVMEDIA_TYPE_VIDEO, -1, -1, &audio_codec, 0);
+    ret = av_find_best_stream(pl_engine->format_context, AVMEDIA_TYPE_VIDEO, -1, -1, &audio_codec, 0);
     if (ret >= 0) {
-        if (!(p_engine->audio_stream = p_engine->format_context->streams[ret])) return AVERROR(ENOMEM);
-        if (!(p_engine->audio_codec_context = avcodec_alloc_context3(video_codec))) return AVERROR(ENOMEM);
-        if ((ret = avcodec_parameters_to_context(p_engine->audio_codec_context, p_engine->audio_stream->codecpar)) < 0) return ret;
-        if ((ret = avcodec_open2(p_engine->audio_codec_context, video_codec, NULL)) < 0) return ret;
+        if (!(pl_engine->audio_stream = pl_engine->format_context->streams[ret])) return AVERROR(ENOMEM);
+        if (!(pl_engine->audio_codec_context = avcodec_alloc_context3(video_codec))) return AVERROR(ENOMEM);
+        if ((ret = avcodec_parameters_to_context(pl_engine->audio_codec_context, pl_engine->audio_stream->codecpar)) < 0) return ret;
+        if ((ret = avcodec_open2(pl_engine->audio_codec_context, video_codec, NULL)) < 0) return ret;
     }
 
-    if (!(p_engine->packet = av_packet_alloc())) return AVERROR(ENOMEM);
-    if (!(p_engine->frame = av_frame_alloc())) return AVERROR(ENOMEM);
+    if (!(pl_engine->packet = av_packet_alloc())) return AVERROR(ENOMEM);
+    if (!(pl_engine->frame = av_frame_alloc())) return AVERROR(ENOMEM);
 
     return 0;
 }
 
-void deinit_ffmpeg(PlayerEngine *p_engine) {
-    av_packet_free(&p_engine->packet);
-    av_frame_free(&p_engine->frame);
-    avcodec_free_context(&p_engine->video_codec_context);
-    avcodec_free_context(&p_engine->audio_codec_context);
-    avformat_close_input(&p_engine->format_context);
+void deinit_ffmpeg(PL_Engine *pl_engine) {
+    av_packet_free(&pl_engine->packet);
+    av_frame_free(&pl_engine->frame);
+    avcodec_free_context(&pl_engine->video_codec_context);
+    avcodec_free_context(&pl_engine->audio_codec_context);
+    avformat_close_input(&pl_engine->format_context);
 }
 
 void error_callback(int error, const char *description) {
@@ -72,7 +72,7 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
     glViewport(viewport_x, viewport_y, new_width, new_height);
 }
 
-int init_glfw(PlayerEngine *p_engine) {
+int init_glfw(PL_Engine *pl_engine) {
     glfwSetErrorCallback(error_callback);
 
     if (!glfwInit()) return -1;
@@ -90,21 +90,21 @@ int init_glfw(PlayerEngine *p_engine) {
     int width  = 16 * factor;
     int height = 9 * factor;
 
-    if (!(p_engine->window = glfwCreateWindow(width, height, "PL", NULL, NULL))) return -1;
+    if (!(pl_engine->window = glfwCreateWindow(width, height, "PL", NULL, NULL))) return -1;
 
-    glfwSetKeyCallback(p_engine->window, key_callback);
-    glfwSetFramebufferSizeCallback(p_engine->window, framebuffer_size_callback);
+    glfwSetKeyCallback(pl_engine->window, key_callback);
+    glfwSetFramebufferSizeCallback(pl_engine->window, framebuffer_size_callback);
 
-    glfwMakeContextCurrent(p_engine->window);
+    glfwMakeContextCurrent(pl_engine->window);
     glfwSwapInterval(0);
 
-    glfwSetWindowPos(p_engine->window, (mode->width - width) / 2, (mode->height - height) / 2);
+    glfwSetWindowPos(pl_engine->window, (mode->width - width) / 2, (mode->height - height) / 2);
 
     return 0;
 }
 
-void deinit_glfw(PlayerEngine *p_engine) {
-    if (p_engine->window) glfwDestroyWindow(p_engine->window);
+void deinit_glfw(PL_Engine *pl_engine) {
+    if (pl_engine->window) glfwDestroyWindow(pl_engine->window);
     glfwTerminate();
 }
 
@@ -133,7 +133,7 @@ const char *frag_src = "#version 410\n"
                        "    fragColor = vec4(rgb, 1.0);\n"
                        "}\n";
 
-int init_opengl(PlayerEngine *p_engine) {
+int init_opengl(PL_Engine *pl_engine) {
     const GLubyte *renderer    = glGetString(GL_RENDERER);
     const GLubyte *vendor      = glGetString(GL_VENDOR);
     const GLubyte *version     = glGetString(GL_VERSION);
@@ -164,22 +164,22 @@ int init_opengl(PlayerEngine *p_engine) {
         return -1;
     }
 
-    p_engine->prog = glCreateProgram();
-    glAttachShader(p_engine->prog, vert);
-    glAttachShader(p_engine->prog, frag);
-    glLinkProgram(p_engine->prog);
+    pl_engine->prog = glCreateProgram();
+    glAttachShader(pl_engine->prog, vert);
+    glAttachShader(pl_engine->prog, frag);
+    glLinkProgram(pl_engine->prog);
 
-    glGetProgramiv(p_engine->prog, GL_LINK_STATUS, &status);
+    glGetProgramiv(pl_engine->prog, GL_LINK_STATUS, &status);
     if (status == GL_FALSE) {
         GLchar infoLog[512];
-        glGetProgramInfoLog(p_engine->prog, 512, NULL, infoLog);
+        glGetProgramInfoLog(pl_engine->prog, 512, NULL, infoLog);
         printf("Shader Program Linking Failed: %s\n", infoLog);
         return -1;
     }
 
-    glUseProgram(p_engine->prog);
+    glUseProgram(pl_engine->prog);
 
-    glGenTextures(3, p_engine->textures);
+    glGenTextures(3, pl_engine->textures);
 
     // clang-format off
     GLfloat vertices[] = {
@@ -190,62 +190,65 @@ int init_opengl(PlayerEngine *p_engine) {
     };
     // clang-format on
 
-    glGenVertexArrays(1, &p_engine->vao);
-    glBindVertexArray(p_engine->vao);
+    glGenVertexArrays(1, &pl_engine->vao);
+    glBindVertexArray(pl_engine->vao);
 
-    glGenBuffers(1, &p_engine->vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, p_engine->vbo);
+    glGenBuffers(1, &pl_engine->vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, pl_engine->vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    GLuint positionAttrib = glGetAttribLocation(p_engine->prog, "position");
+    GLuint positionAttrib = glGetAttribLocation(pl_engine->prog, "position");
     glEnableVertexAttribArray(positionAttrib);
     glVertexAttribPointer(positionAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void *)0);
 
-    GLuint texCoordAttrib = glGetAttribLocation(p_engine->prog, "texCoord");
+    GLuint texCoordAttrib = glGetAttribLocation(pl_engine->prog, "texCoord");
     glEnableVertexAttribArray(texCoordAttrib);
     glVertexAttribPointer(texCoordAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid *)(2 * sizeof(GLfloat)));
 
-    glUniform1i(glGetUniformLocation(p_engine->prog, "textureY"), 0);
-    glUniform1i(glGetUniformLocation(p_engine->prog, "textureU"), 1);
-    glUniform1i(glGetUniformLocation(p_engine->prog, "textureV"), 2);
+    glUniform1i(glGetUniformLocation(pl_engine->prog, "textureY"), 0);
+    glUniform1i(glGetUniformLocation(pl_engine->prog, "textureU"), 1);
+    glUniform1i(glGetUniformLocation(pl_engine->prog, "textureV"), 2);
 
     // Clean up shaders
-    glDetachShader(p_engine->prog, vert);
-    glDetachShader(p_engine->prog, frag);
+    glDetachShader(pl_engine->prog, vert);
+    glDetachShader(pl_engine->prog, frag);
     glDeleteShader(vert);
     glDeleteShader(frag);
 
     return 0;
 }
 
-void deinit_opengl(PlayerEngine *p_engine) {
-    glDeleteProgram(p_engine->prog);
-    glDeleteVertexArrays(1, &p_engine->vao);
-    glDeleteBuffers(1, &p_engine->vbo);
-    glDeleteTextures(3, p_engine->textures);
+void deinit_opengl(PL_Engine *pl_engine) {
+    glDeleteProgram(pl_engine->prog);
+    glDeleteVertexArrays(1, &pl_engine->vao);
+    glDeleteBuffers(1, &pl_engine->vbo);
+    glDeleteTextures(3, pl_engine->textures);
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glUseProgram(0);
 }
 
-int pl_engine_init(PlayerEngine **o_p_engine, const char *url) {
+int pl_engine_init(PL_Engine **o_pl_engine, const char *url) {
     int ret;
 
-    PlayerEngine *p_engine = (PlayerEngine *)av_calloc(1, sizeof(PlayerEngine));
+    PL_Engine *pl_engine = (PL_Engine *)av_calloc(1, sizeof(PL_Engine));
 
-    if ((ret = init_ffmpeg(p_engine, url)) < 0) return ret;
-    if ((ret = init_glfw(p_engine)) < 0) return ret;
-    if ((ret = init_opengl(p_engine)) < 0) return ret;
+    if ((ret = init_ffmpeg(pl_engine, url)) < 0) return ret;
+    if ((ret = init_glfw(pl_engine)) < 0) return ret;
+    if ((ret = init_opengl(pl_engine)) < 0) return ret;
 
-    *o_p_engine = p_engine;
+    pl_engine->start_time = av_gettime_relative();
+    pl_engine->pts_time   = 0;
+
+    *o_pl_engine = pl_engine;
 
     return 0;
 }
-void pl_engine_deinit(PlayerEngine **p_engine) {
-    deinit_ffmpeg(*p_engine);
-    deinit_glfw(*p_engine);
-    deinit_opengl(*p_engine);
+void pl_engine_deinit(PL_Engine **pl_engine) {
+    deinit_ffmpeg(*pl_engine);
+    deinit_glfw(*pl_engine);
+    deinit_opengl(*pl_engine);
 
-    free(*p_engine);
-    *p_engine = NULL;
+    free(*pl_engine);
+    *pl_engine = NULL;
 }

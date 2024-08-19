@@ -21,15 +21,18 @@ typedef struct {
     AVPacket *packet;
     AVFrame *frame;
 
+    int64_t start_time;
+    int64_t pts_time;
+
     /* GLFW */
     GLFWwindow *window;
 
     /* OpenGL */
     GLuint prog, vao, vbo, textures[3];
 
-} PlayerEngine;
+} PL_Engine;
 
-PL_API int pl_engine_init(PlayerEngine **p_engine, const char *url);
-PL_API void pl_engine_deinit(PlayerEngine **p_engine);
+PL_API int pl_engine_init(PL_Engine **p_engine, const char *url);
+PL_API void pl_engine_deinit(PL_Engine **p_engine);
 
 #endif // PL_H
