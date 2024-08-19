@@ -8,16 +8,16 @@
 #include <stdlib.h>
 
 int main(void) {
-    AVFormatContext *in_fmt_ctx   = NULL;
-    AVDictionary    *in_opt       = NULL;
-    AVStream        *in_stream    = NULL;
-    const AVCodec   *in_codec     = NULL;
-    AVCodecContext  *in_codec_ctx = NULL;
-    AVPacket        *in_packet    = NULL;
-    AVFrame         *in_frame     = NULL;
-    int              ret          = +0;
-    int              in_stream_id = -1;
-    int64_t          start        = -1;
+    AVFormatContext *in_fmt_ctx  = NULL;
+    AVDictionary *in_opt         = NULL;
+    AVStream *in_stream          = NULL;
+    const AVCodec *in_codec      = NULL;
+    AVCodecContext *in_codec_ctx = NULL;
+    AVPacket *in_packet          = NULL;
+    AVFrame *in_frame            = NULL;
+    int ret                      = +0;
+    int in_stream_id             = -1;
+    int64_t start                = -1;
 
     avdevice_register_all();
 
@@ -67,7 +67,8 @@ int main(void) {
             int64_t delay = pts - now;
             if (delay > 0) av_usleep(delay);
 
-            printf("codec: %s | frame: %4lld | now: %9lf | pts: %9lf | delay: %9lf | format: %s\n", avcodec_get_name(in_codec->id), in_codec_ctx->frame_num, now * 1e-6, pts * 1e-6, delay * 1e-6, av_get_pix_fmt_name(in_frame->format));
+            printf("codec: %s | frame: %4lld | now: %9lf | pts: %9lf | delay: %9lf | format: %s\n", avcodec_get_name(in_codec->id), in_codec_ctx->frame_num, now * 1e-6, pts * 1e-6, delay * 1e-6,
+                   av_get_pix_fmt_name(in_frame->format));
         }
         av_packet_unref(in_packet);
 

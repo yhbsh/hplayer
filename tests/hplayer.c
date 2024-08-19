@@ -11,17 +11,17 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    SDL_Window      *window       = NULL;
-    SDL_Renderer    *renderer     = NULL;
-    SDL_Texture     *texture      = NULL;
-    AVFormatContext *in_fmt_ctx   = NULL;
-    const AVCodec   *in_codec     = NULL;
-    AVCodecContext  *in_codec_ctx = NULL;
-    const AVStream  *in_stream    = NULL;
-    AVFrame         *in_frame     = NULL;
-    AVPacket        *in_packet    = NULL;
-    int              ret          = -1;
-    int              in_stream_id = -1;
+    SDL_Window *window           = NULL;
+    SDL_Renderer *renderer       = NULL;
+    SDL_Texture *texture         = NULL;
+    AVFormatContext *in_fmt_ctx  = NULL;
+    const AVCodec *in_codec      = NULL;
+    AVCodecContext *in_codec_ctx = NULL;
+    const AVStream *in_stream    = NULL;
+    AVFrame *in_frame            = NULL;
+    AVPacket *in_packet          = NULL;
+    int ret                      = -1;
+    int in_stream_id             = -1;
 
     av_log_set_level(AV_LOG_TRACE);
     ret = avformat_open_input(&in_fmt_ctx, argv[1], NULL, NULL);
@@ -69,7 +69,7 @@ int main(int argc, char *argv[]) {
     SDL_SetWindowBordered(window, SDL_TRUE);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-    SDL_bool  quit = SDL_FALSE;
+    SDL_bool quit = SDL_FALSE;
     SDL_Event event;
 
     do {

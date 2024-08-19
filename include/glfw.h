@@ -3,4 +3,4 @@
 
 int init_glfw(GLFWwindow **window);
 void deinit_glfw(GLFWwindow *window);
-void toggle_fullscreen(GLFWwindow* window);
+void toggle_fullscreen(GLFWwindow *window);

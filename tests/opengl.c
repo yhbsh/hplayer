@@ -41,17 +41,17 @@ int main(int argc, char *argv[]) {
     }
 
     av_log_set_level(AV_LOG_TRACE);
-    int              ret;
+    int ret;
     AVFormatContext *in_ctx = NULL;
     ret                     = avformat_open_input(&in_ctx, argv[1], NULL, NULL);
     ret                     = avformat_find_stream_info(in_ctx, NULL);
-    const AVCodec  *c       = NULL;
-    int             vs      = av_find_best_stream(in_ctx, AVMEDIA_TYPE_VIDEO, -1, -1, &c, 0);
+    const AVCodec *c        = NULL;
+    int vs                  = av_find_best_stream(in_ctx, AVMEDIA_TYPE_VIDEO, -1, -1, &c, 0);
     const AVStream *s       = in_ctx->streams[vs];
     AVCodecContext *cc      = avcodec_alloc_context3(c);
     ret                     = avcodec_parameters_to_context(cc, s->codecpar);
     ret                     = avcodec_open2(cc, c, NULL);
-    AVFrame  *f             = av_frame_alloc();
+    AVFrame *f              = av_frame_alloc();
     AVPacket *p             = av_packet_alloc();
 
     const int width  = 960;

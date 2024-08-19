@@ -1,18 +1,13 @@
-CC     := clang
-CFLAGS := $(shell pkg-config --static --cflags libavformat libavcodec glfw3)
-CFLAGS += -Ofast -march=native -mtune=native -flto
-CFLAGS += -ffast-math -funroll-loops -fomit-frame-pointer
-CFLAGS += -DGL_SILENCE_DEPRECATION
+CC       := clang
+CFLAGS   := -I./include -Ofast -march=native -mtune=native -ffast-math -funroll-loops -fomit-frame-pointer -DGL_SILENCE_DEPRECATION
 SRCDIR   := src
 INCDIR   := include
 BUILDDIR := build
 BINDIR   := bin
-CFLAGS += -I$(INCDIR)
-LDFLAGS := $(shell pkg-config --static --libs libavformat libavcodec glfw3)
-LDFLAGS += -framework OpenGL -flto
-SRCS := $(wildcard $(SRCDIR)/*.c)
-OBJS := $(patsubst $(SRCDIR)/%.c,$(BUILDDIR)/%.o,$(SRCS))
-EXEC := $(BINDIR)/main
+LDFLAGS  := -lavcodec -lavformat -lavdevice -lswscale -lswresample -lavutil -lglfw3 -framework OpenGL -framework IOKit -framework Cocoa
+SRCS     := $(wildcard $(SRCDIR)/*.c)
+OBJS     := $(patsubst $(SRCDIR)/%.c,$(BUILDDIR)/%.o,$(SRCS))
+EXEC     := $(BINDIR)/main
 
 .PHONY: all clean directories
 

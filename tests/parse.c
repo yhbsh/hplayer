@@ -10,9 +10,9 @@ int main(int argc, char *argv[]) {
     }
 
     av_log_set_level(AV_LOG_TRACE);
-    const AVCodec *codec = avcodec_find_decoder(AV_CODEC_ID_HEVC);
-    AVCodecContext *codec_context = avcodec_alloc_context3(codec);
-    int ret = avcodec_open2(codec_context, codec, NULL);
+    const AVCodec *codec                 = avcodec_find_decoder(AV_CODEC_ID_HEVC);
+    AVCodecContext *codec_context        = avcodec_alloc_context3(codec);
+    int ret                              = avcodec_open2(codec_context, codec, NULL);
     AVCodecParserContext *parser_context = av_parser_init(codec->id);
 
     FILE *file = fopen(argv[1], "rb");
@@ -25,14 +25,14 @@ int main(int argc, char *argv[]) {
     fclose(file);
 
     AVPacket *packet = av_packet_alloc();
-    AVFrame *frame = av_frame_alloc();
+    AVFrame *frame   = av_frame_alloc();
 
     uint8_t *data = file_buffer;
     int data_size = file_size;
 
     while (data_size > 0) {
-        ret        = av_parser_parse2(parser_context, codec_context, &packet->data, &packet->size, data, data_size, AV_NOPTS_VALUE, AV_NOPTS_VALUE, 0);
-        data      += ret;
+        ret = av_parser_parse2(parser_context, codec_context, &packet->data, &packet->size, data, data_size, AV_NOPTS_VALUE, AV_NOPTS_VALUE, 0);
+        data += ret;
         data_size -= ret;
 
         if (packet->size) {
@@ -54,4 +54,3 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
-
