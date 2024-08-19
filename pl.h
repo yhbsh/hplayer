@@ -1,3 +1,8 @@
+#ifndef PL_H
+#define PL_H
+
+#define PL_API
+
 #define GL_SILENCE_DEPRECATION
 #include <OpenGL/gl3.h>
 #include <GLFW/glfw3.h>
@@ -24,5 +29,7 @@ typedef struct {
 
 } PlayerEngine;
 
-int init_engine(PlayerEngine **p_engine, const char *url);
-void deinit_engine(PlayerEngine **p_engine);
+PL_API int pl_engine_init(PlayerEngine **p_engine, const char *url);
+PL_API void pl_engine_deinit(PlayerEngine **p_engine);
+
+#endif // PL_H

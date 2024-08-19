@@ -1,4 +1,4 @@
-#include "ffplay.h"
+#include "pl.h"
 
 int init_ffmpeg(PlayerEngine *p_engine, const char *url) {
     int ret;
@@ -90,7 +90,7 @@ int init_glfw(PlayerEngine *p_engine) {
     int width  = 16 * factor;
     int height = 9 * factor;
 
-    if (!(p_engine->window = glfwCreateWindow(width, height, "FFplay", NULL, NULL))) return -1;
+    if (!(p_engine->window = glfwCreateWindow(width, height, "PL", NULL, NULL))) return -1;
 
     glfwSetKeyCallback(p_engine->window, key_callback);
     glfwSetFramebufferSizeCallback(p_engine->window, framebuffer_size_callback);
@@ -228,7 +228,7 @@ void deinit_opengl(PlayerEngine *p_engine) {
     glUseProgram(0);
 }
 
-int init_engine(PlayerEngine **o_p_engine, const char *url) {
+int pl_engine_init(PlayerEngine **o_p_engine, const char *url) {
     int ret;
 
     PlayerEngine *p_engine = (PlayerEngine *)av_calloc(1, sizeof(PlayerEngine));
@@ -241,7 +241,7 @@ int init_engine(PlayerEngine **o_p_engine, const char *url) {
 
     return 0;
 }
-void deinit_engine(PlayerEngine **p_engine) {
+void pl_engine_deinit(PlayerEngine **p_engine) {
     deinit_ffmpeg(*p_engine);
     deinit_glfw(*p_engine);
     deinit_opengl(*p_engine);

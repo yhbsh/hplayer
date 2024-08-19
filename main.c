@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "ffplay.h"
+#include "pl.h"
 
 int main(int argc, char *argv[]) {
     if (argc != 2) {
@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
     int ret;
     PlayerEngine *p_engine = NULL;
 
-    if ((ret = init_engine(&p_engine, argv[1])) < 0) {
+    if ((ret = pl_engine_init(&p_engine, argv[1])) < 0) {
         fprintf(stderr, "[ERROR]: init_engine(): %s\n", av_err2str(ret));
         return 1;
     }
@@ -74,7 +74,7 @@ int main(int argc, char *argv[]) {
         av_packet_unref(p_engine->packet);
     }
 
-    deinit_engine(&p_engine);
+    pl_engine_deinit(&p_engine);
 
     return 0;
 }

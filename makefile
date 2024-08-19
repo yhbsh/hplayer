@@ -3,8 +3,8 @@ CFLAGS   := -I./include -Ofast
 LFLAGS   := -lavformat -lavcodec -lavdevice -lswscale -lswresample -lavutil -lglfw3 -framework OpenGL -framework IOKit -framework Cocoa
 
 
-main: main.c ffplay.c
-	cc $(CFLAGS) main.c ffplay.c -o ffplay $(LFLAGS)
+main: main.c pl.c
+	cc $(CFLAGS) main.c pl.c -o pl $(LFLAGS)
 
 clean:
-	rm -r ffplay *.dSYM
+	rm -rf pl *.dSYM
