@@ -1,6 +1,7 @@
 CC       := clang
-CFLAGS   := -I./include -Ofast
-LFLAGS   := -lavformat -lavcodec -lavdevice -lswscale -lswresample -lavutil -lglfw3 -framework OpenGL -framework IOKit -framework Cocoa
+CFLAGS   := $(shell pkg-config --cflags libavcodec libavformat libavdevice libswscale libswresample libavutil)
+CFLAGS   += -Wall -O3
+LFLAGS   := $(shell pkg-config --libs libavcodec libavformat libavdevice libswscale libswresample libavutil glfw3)
 
 
 main: main.c pl.c
