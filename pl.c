@@ -7,8 +7,8 @@ int init_ffmpeg(PL_Engine *pl_engine, const char *url) {
     if ((ret = avformat_open_input(&pl_engine->format_context, url, NULL, NULL)) < 0) return ret;
     if ((ret = avformat_find_stream_info(pl_engine->format_context, NULL)) < 0) return ret;
 
-    const AVCodec *video_codec = NULL;
-    const AVCodec *audio_codec = NULL;
+    AVCodec *video_codec = NULL;
+    AVCodec *audio_codec = NULL;
 
     ret = av_find_best_stream(pl_engine->format_context, AVMEDIA_TYPE_VIDEO, -1, -1, &video_codec, 0);
     if (ret >= 0) {
@@ -134,11 +134,6 @@ const char *frag_src = "#version 410\n"
                        "}\n";
 
 int init_opengl(PL_Engine *pl_engine) {
-    const GLubyte *renderer    = glGetString(GL_RENDERER);
-    const GLubyte *vendor      = glGetString(GL_VENDOR);
-    const GLubyte *version     = glGetString(GL_VERSION);
-    const GLubyte *glslVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
-
     GLuint vert = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vert, 1, &vert_src, NULL);
     glCompileShader(vert);
