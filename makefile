@@ -1,5 +1,5 @@
 CC       := clang
-CFLAGS   := $(shell pkg-config --cflags libavcodec libavformat libavdevice libswscale libswresample libavutil)
+CFLAGS   := $(shell pkg-config --cflags libavcodec libavformat libavdevice libswscale libswresample libavutil glfw3)
 CFLAGS   += -Wall -O3
 LFLAGS   := $(shell pkg-config --libs libavcodec libavformat libavdevice libswscale libswresample libavutil glfw3)
 
