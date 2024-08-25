@@ -3,36 +3,34 @@
 
 #define PL_API
 
-#define GL_SILENCE_DEPRECATION
-#include <OpenGL/gl3.h>
-#include <GLFW/glfw3.h>
+typedef struct PL_Engine PL_Engine;
 
-#include <libavcodec/avcodec.h>
-#include <libavformat/avformat.h>
-#include <libavutil/time.h>
+#define PL_ERROR_EOF -1
+#define PL_ERROR_UNAVAILABLE -2
 
-typedef struct {
-    /* FFmpeg */
-    AVFormatContext *format_context;
-    AVStream *video_stream;
-    AVStream *audio_stream;
-    AVCodecContext *video_codec_context;
-    AVCodecContext *audio_codec_context;
-    AVPacket *packet;
-    AVFrame *frame;
+/* Engine */
+PL_API int pl_engine_init(PL_Engine **pl_engine, const char *url);
+PL_API void pl_engine_deinit(PL_Engine **pl_engine);
 
-    int64_t start_time;
-    int64_t pts_time;
+/* Window */
+PL_API int pl_window_should_close(PL_Engine *pl_engine);
 
-    /* GLFW */
-    GLFWwindow *window;
+/* Video */
+PL_API int pl_engine_is_vpacket(PL_Engine *pl_engine);
+PL_API int pl_send_vpacket(PL_Engine *pl_engine);
+PL_API int pl_receive_vframe(PL_Engine *pl_engine);
 
-    /* OpenGL */
-    GLuint prog, vao, vbo, textures[3];
+/* Audio */
+PL_API int pl_engine_is_apacket(PL_Engine *pl_engine);
+PL_API int pl_send_apacket(PL_Engine *pl_engine);
+PL_API int pl_receive_aframe(PL_Engine *pl_engine);
 
-} PL_Engine;
+PL_API int pl_read_packet(PL_Engine *pl_engine);
+PL_API void pl_packet_unref(PL_Engine *pl_engine);
 
-PL_API int pl_engine_init(PL_Engine **p_engine, const char *url);
-PL_API void pl_engine_deinit(PL_Engine **p_engine);
+PL_API void pl_render_frame(PL_Engine *pl_engine);
+PL_API void pl_delay_pts(PL_Engine *pl_engine);
+
+PL_API const char *pl_err2str(int code);
 
 #endif // PL_H

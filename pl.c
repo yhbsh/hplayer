@@ -1,4 +1,32 @@
+#define GL_SILENCE_DEPRECATION
+#include <OpenGL/gl3.h>
+#include <GLFW/glfw3.h>
+
+#include <libavcodec/avcodec.h>
+#include <libavformat/avformat.h>
+#include <libavutil/time.h>
+
 #include "pl.h"
+
+struct PL_Engine {
+    /* FFmpeg */
+    AVFormatContext *format_context;
+    AVStream *video_stream;
+    AVStream *audio_stream;
+    AVCodecContext *video_codec_context;
+    AVCodecContext *audio_codec_context;
+    AVPacket *packet;
+    AVFrame *frame;
+
+    int64_t start_time;
+    int64_t pts_time;
+
+    /* GLFW */
+    GLFWwindow *window;
+
+    /* OpenGL */
+    GLuint prog, vao, vbo, textures[3];
+};
 
 int init_ffmpeg(PL_Engine *pl_engine, const char *url) {
     int ret;
@@ -239,6 +267,7 @@ int pl_engine_init(PL_Engine **o_pl_engine, const char *url) {
 
     return 0;
 }
+
 void pl_engine_deinit(PL_Engine **pl_engine) {
     deinit_ffmpeg(*pl_engine);
     deinit_glfw(*pl_engine);
@@ -246,4 +275,88 @@ void pl_engine_deinit(PL_Engine **pl_engine) {
 
     free(*pl_engine);
     *pl_engine = NULL;
+}
+
+int pl_engine_is_vpacket(PL_Engine *pl_engine) {
+    return pl_engine->packet->stream_index == pl_engine->video_stream->index;
+}
+
+int pl_engine_is_apacket(PL_Engine *pl_engine) {
+    return pl_engine->packet->stream_index == pl_engine->audio_stream->index;
+}
+
+int pl_window_should_close(PL_Engine *pl_engine) {
+    return glfwWindowShouldClose(pl_engine->window);
+}
+
+int pl_read_packet(PL_Engine *pl_engine) {
+    int ret = av_read_frame(pl_engine->format_context, pl_engine->packet);
+    if (ret == AVERROR(EAGAIN)) return PL_ERROR_UNAVAILABLE;
+    if (ret == AVERROR_EOF) return PL_ERROR_EOF;
+
+    return ret;
+}
+
+int pl_send_vpacket(PL_Engine *pl_engine) {
+    return avcodec_send_packet(pl_engine->video_codec_context, pl_engine->packet);
+}
+
+int pl_send_apacket(PL_Engine *pl_engine) {
+    return avcodec_send_packet(pl_engine->audio_codec_context, pl_engine->packet);
+}
+
+void pl_packet_unref(PL_Engine *pl_engine) {
+    return av_packet_unref(pl_engine->packet);
+}
+
+int pl_receive_vframe(PL_Engine *pl_engine) {
+    int ret = avcodec_receive_frame(pl_engine->video_codec_context, pl_engine->frame);
+    if (ret == AVERROR_EOF) return PL_ERROR_EOF;
+    if (ret == AVERROR(EAGAIN)) return PL_ERROR_UNAVAILABLE;
+    return ret;
+}
+
+int pl_receive_aframe(PL_Engine *pl_engine) {
+    return avcodec_receive_frame(pl_engine->audio_codec_context, pl_engine->frame);
+}
+
+void pl_render_frame(PL_Engine *pl_engine) {
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, pl_engine->textures[0]);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, pl_engine->frame->width, pl_engine->frame->height, 0, GL_RED, GL_UNSIGNED_BYTE, pl_engine->frame->data[0]);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, pl_engine->textures[1]);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, pl_engine->frame->width / 2, pl_engine->frame->height / 2, 0, GL_RED, GL_UNSIGNED_BYTE, pl_engine->frame->data[1]);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, pl_engine->textures[2]);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, pl_engine->frame->width / 2, pl_engine->frame->height / 2, 0, GL_RED, GL_UNSIGNED_BYTE, pl_engine->frame->data[2]);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+    glfwPollEvents();
+    glfwSwapBuffers(pl_engine->window);
+}
+
+void pl_delay_pts(PL_Engine *pl_engine) {
+    int64_t pts = pl_engine->frame->best_effort_timestamp;
+    if (pts == AV_NOPTS_VALUE) pts = 0;
+    pl_engine->pts_time  = av_rescale_q(pts, pl_engine->video_stream->time_base, AV_TIME_BASE_Q);
+    int64_t current_time = av_gettime_relative() - pl_engine->start_time;
+    int64_t delay        = (pl_engine->pts_time - current_time);
+
+    if (delay > 0) av_usleep(delay);
+}
+
+PL_API const char *pl_err2str(int code) {
+    return av_err2str(code);
 }
