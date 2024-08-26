@@ -22,7 +22,6 @@ int main(int argc, char *argv[]) {
         if (ret == PL_ERROR_UNAVAILABLE) continue;
         if (ret == PL_ERROR_EOF) break;
 
-        /* Video Packet */
         if (pl_engine_is_vpacket(pl_engine)) {
             if ((ret = pl_send_vpacket(pl_engine)) < 0) {
                 fprintf(stderr, "[ERROR]: pl_send_packet(): %s\n", pl_err2str(ret));
