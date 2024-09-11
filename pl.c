@@ -35,8 +35,8 @@ int init_ffmpeg(PL_Engine *pl_engine, const char *url) {
     if ((ret = avformat_open_input(&pl_engine->format_context, url, NULL, NULL)) < 0) return ret;
     if ((ret = avformat_find_stream_info(pl_engine->format_context, NULL)) < 0) return ret;
 
-    AVCodec *video_codec = NULL;
-    AVCodec *audio_codec = NULL;
+    const AVCodec *video_codec = NULL;
+    const AVCodec *audio_codec = NULL;
 
     ret = av_find_best_stream(pl_engine->format_context, AVMEDIA_TYPE_VIDEO, -1, -1, &video_codec, 0);
     if (ret >= 0) {
@@ -73,6 +73,10 @@ void error_callback(int error, const char *description) {
 }
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
+    (void)scancode;
+    (void)action;
+    (void)mods;
+
     if ((key == GLFW_KEY_ESCAPE || key == GLFW_KEY_Q) && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
     }
@@ -101,10 +105,9 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
 }
 
 int init_glfw(PL_Engine *pl_engine) {
-    glfwSetErrorCallback(error_callback);
-
     if (!glfwInit()) return -1;
 
+    glfwSetErrorCallback(error_callback);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
