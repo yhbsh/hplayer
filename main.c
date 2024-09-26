@@ -12,14 +12,14 @@ int main(int argc, char *argv[]) {
     PL_Engine *pl_engine = NULL;
 
     if ((ret = pl_engine_init(&pl_engine, argv[1])) < 0) {
-        fprintf(stderr, "[ERROR]: init_engine(): %s\n", pl_err2str(ret));
+        fprintf(stderr, "[ERROR]: pl_engine_init(): %s\n", pl_err2str(ret));
         return 1;
     }
 
     while (!pl_window_should_close(pl_engine)) {
         ret = pl_read_packet(pl_engine);
 
-        if (ret == PL_ERROR_UNAVAILABLE) continue;
+        if (ret == PL_ERROR_WOULD_BLOCK) continue;
         if (ret == PL_ERROR_EOF) break;
 
         if (pl_engine_is_vpacket(pl_engine)) {
@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
 
             while (ret >= 0) {
                 ret = pl_receive_vframe(pl_engine);
-                if (ret == PL_ERROR_UNAVAILABLE || ret == PL_ERROR_EOF) break;
+                if (ret == PL_ERROR_WOULD_BLOCK || ret == PL_ERROR_EOF) break;
                 if (ret < 0) {
                     fprintf(stderr, "[ERROR]: pl_receive_vframe(): %s\n", pl_err2str(ret));
                     return 1;

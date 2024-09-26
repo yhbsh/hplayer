@@ -6,7 +6,7 @@
 typedef struct PL_Engine PL_Engine;
 
 #define PL_ERROR_EOF -1
-#define PL_ERROR_UNAVAILABLE -2
+#define PL_ERROR_WOULD_BLOCK -2
 
 /* Engine */
 PL_API int pl_engine_init(PL_Engine **pl_engine, const char *url);

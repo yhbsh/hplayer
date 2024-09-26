@@ -1,6 +1,6 @@
 CC       := clang
 CFLAGS   := $(shell pkg-config --cflags libavcodec libavformat libavutil glfw3)
-CFLAGS   += -Wall -Wextra -O2
+CFLAGS   += -Wall -Wextra -O3
 LFLAGS   := $(shell pkg-config --libs libavcodec libavformat libavutil glfw3)
 
 main: main.c pl.c

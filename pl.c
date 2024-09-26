@@ -294,7 +294,7 @@ int pl_window_should_close(PL_Engine *pl_engine) {
 
 int pl_read_packet(PL_Engine *pl_engine) {
     int ret = av_read_frame(pl_engine->format_context, pl_engine->packet);
-    if (ret == AVERROR(EAGAIN)) return PL_ERROR_UNAVAILABLE;
+    if (ret == AVERROR(EAGAIN)) return PL_ERROR_WOULD_BLOCK;
     if (ret == AVERROR_EOF) return PL_ERROR_EOF;
 
     return ret;
@@ -315,7 +315,7 @@ void pl_packet_unref(PL_Engine *pl_engine) {
 int pl_receive_vframe(PL_Engine *pl_engine) {
     int ret = avcodec_receive_frame(pl_engine->video_codec_context, pl_engine->frame);
     if (ret == AVERROR_EOF) return PL_ERROR_EOF;
-    if (ret == AVERROR(EAGAIN)) return PL_ERROR_UNAVAILABLE;
+    if (ret == AVERROR(EAGAIN)) return PL_ERROR_WOULD_BLOCK;
     return ret;
 }
 

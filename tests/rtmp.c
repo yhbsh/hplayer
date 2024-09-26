@@ -5,14 +5,10 @@
 #include <libavutil/time.h>
 #include <libswscale/swscale.h>
 
-#include <errno.h>
-#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/errno.h>
-#include <unistd.h>
 
-#define URL "rtsp://localhost:554/stream"
+#define URL "rtmp://localhost:1935/live/stream"
 
 int main(void) {
     AVFormatContext *in_fmt_ctx   = NULL;
@@ -49,15 +45,15 @@ int main(void) {
     in_codec_ctx                = avcodec_alloc_context3(in_codec);
     ret                         = avcodec_parameters_to_context(in_codec_ctx, in_stream->codecpar);
     ret                         = avcodec_open2(in_codec_ctx, in_codec, NULL);
-    ret                         = avformat_alloc_output_context2(&out_fmt_ctx, NULL, "rtsp", URL);
-    out_codec                   = avcodec_find_encoder_by_name("h264_videotoolbox");
+    ret                         = avformat_alloc_output_context2(&out_fmt_ctx, NULL, "flv", URL);
+    out_codec                   = avcodec_find_encoder_by_name("hevc_videotoolbox");
     out_codec_ctx               = avcodec_alloc_context3(out_codec);
     out_stream                  = avformat_new_stream(out_fmt_ctx, out_codec);
     out_codec_ctx->bit_rate     = 1000000;
     out_codec_ctx->width        = in_codec_ctx->width;
     out_codec_ctx->height       = in_codec_ctx->height;
-    out_codec_ctx->time_base    = (AVRational){1, 24};
-    out_codec_ctx->framerate    = (AVRational){24, 1};
+    out_codec_ctx->time_base    = (AVRational){1, 60};
+    out_codec_ctx->framerate    = (AVRational){60, 1};
     out_codec_ctx->color_range  = AVCOL_RANGE_MPEG;
     out_codec_ctx->gop_size     = 50;
     out_codec_ctx->max_b_frames = 2;
@@ -79,24 +75,7 @@ int main(void) {
 
     printf("in_cocdec_ctx->pix_fmt: %s - out_codec_ctx: %s\n", av_get_pix_fmt_name(in_codec_ctx->pix_fmt), av_get_pix_fmt_name(out_codec_ctx->pix_fmt));
 
-    uint8_t ch;
-    int flags = fcntl(STDIN_FILENO, F_GETFL, 0);
-    if (flags == -1) {
-        perror("fcntl");
-        exit(1);
-    }
-    flags |= O_NONBLOCK;
-    if (fcntl(STDIN_FILENO, F_SETFL, flags) == -1) {
-        perror("fcntl");
-        exit(1);
-    }
     while (1) {
-        if (read(STDIN_FILENO, &ch, 1) > 0) {
-            if (ch == 'q' || ch == 'Q') {
-                fprintf(stderr, "Exiting on user command.\n");
-                goto clean;
-            }
-        }
         ret = av_read_frame(in_fmt_ctx, in_packet);
         if (ret < 0) {
             if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF) continue;
