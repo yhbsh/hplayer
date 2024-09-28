@@ -15,7 +15,6 @@ int main(void) {
     const AVCodec *in_codec       = NULL;
     AVCodecContext *in_codec_ctx  = NULL;
     AVStream *in_stream           = NULL;
-    AVDictionary *in_opt          = NULL;
     AVPacket *in_packet           = NULL;
     AVFrame *in_frame             = NULL;
     AVFormatContext *out_fmt_ctx  = NULL;
@@ -33,12 +32,8 @@ int main(void) {
     avdevice_register_all();
     avformat_network_init();
 
-    av_dict_set(&in_opt, "pixel_format", "nv12", 0);
-    av_dict_set(&in_opt, "framerate", "144", 0);
-    av_dict_set(&in_opt, "probesize", "32", 0);
-
     in_fmt_ctx                  = avformat_alloc_context();
-    ret                         = avformat_open_input(&in_fmt_ctx, "0", av_find_input_format("avfoundation"), &in_opt);
+    ret                         = avformat_open_input(&in_fmt_ctx, "../samples/sample.hevc", NULL, NULL);
     ret                         = avformat_find_stream_info(in_fmt_ctx, NULL);
     in_stream_id                = av_find_best_stream(in_fmt_ctx, AVMEDIA_TYPE_VIDEO, -1, -1, &in_codec, 0);
     in_stream                   = in_fmt_ctx->streams[in_stream_id];
