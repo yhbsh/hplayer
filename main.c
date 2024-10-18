@@ -9,8 +9,8 @@
 #include <assert.h>
 #include <stdio.h>
 
-int64_t launch_time;
 int ret;
+int64_t launch_time = 0;
 
 static GLFWwindow *window = NULL;
 
@@ -62,14 +62,15 @@ int main(int argc, const char *argv[]) {
 
     if ((ret = glfwInit()) < 0) return ret;
 
-    glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
 
-    if ((window = glfwCreateWindow(1440, 810, "VIDEO", NULL, NULL)) == NULL) return 1;
+    GLFWmonitor *monitor    = glfwGetPrimaryMonitor();
+    const GLFWvidmode *mode = glfwGetVideoMode(monitor);
+
+    if ((window = glfwCreateWindow(mode->width, mode->height, "VIDEO", monitor, NULL)) == NULL) return 1;
 
     glfwSwapInterval(0);
     glfwMakeContextCurrent(window);
@@ -141,8 +142,8 @@ int main(int argc, const char *argv[]) {
     while (!glfwWindowShouldClose(window)) {
         ret = av_read_frame(format_context, packet);
         if (ret == AVERROR_EOF) {
-            av_seek_frame(format_context, stream->index, 0, 0);
-            avcodec_flush_buffers(codec_context);
+            av_seek_frame(format_context, -1, 0, AVSEEK_FLAG_ANY);
+            continue;
         }
 
         if (ret == AVERROR(EAGAIN) || packet->stream_index != stream->index) {
@@ -151,20 +152,31 @@ int main(int argc, const char *argv[]) {
             continue;
         }
 
+        if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
+            exit(0);
+        }
+
+        if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+            av_seek_frame(format_context, stream->index, 0, AVSEEK_FLAG_ANY);
+        }
+
+        if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+            av_seek_frame(format_context, stream->index, 0, AVSEEK_FLAG_ANY);
+        }
+
         ret = avcodec_send_packet(codec_context, packet);
         while (ret >= 0) {
             ret = avcodec_receive_frame(codec_context, frame);
             if (ret == AVERROR_EOF || ret == AVERROR(EAGAIN)) break;
             if (ret < 0) exit(1);
 
-            assert(frame->format == AV_PIX_FMT_YUV420P);
+            assert(frame->format == AV_PIX_FMT_YUV420P || frame->format == AV_PIX_FMT_YUVJ420P);
 
             int64_t pts = (1000 * 1000 * frame->pts * stream->time_base.num) / stream->time_base.den;
             int64_t rts = av_gettime_relative() - launch_time;
+            if (pts > rts) av_usleep(pts - rts);
 
-            if (pts > rts) {
-                av_usleep(pts - rts);
-            }
+            printf("%04lld | PTS %llds %03lldms %03lldus | RTS %llds %03lldms %03lldus\n", codec_context->frame_num, pts / 1000000, (pts % 1000000) / 1000, pts % 1000, rts / 1000000, (rts % 1000000) / 1000, rts % 1000);
 
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
