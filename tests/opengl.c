@@ -40,7 +40,6 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    av_log_set_level(AV_LOG_TRACE);
     int ret;
     AVFormatContext *in_ctx = NULL;
     ret                     = avformat_open_input(&in_ctx, argv[1], NULL, NULL);
@@ -54,9 +53,6 @@ int main(int argc, char *argv[]) {
     AVFrame *f              = av_frame_alloc();
     AVPacket *p             = av_packet_alloc();
 
-    const int width  = 960;
-    const int height = 540;
-
     glfwInit();
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -66,21 +62,13 @@ int main(int argc, char *argv[]) {
     glfwWindowHint(GLFW_DECORATED, GLFW_TRUE);
     glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
-    GLFWwindow *window = glfwCreateWindow(width, height, "Video", NULL, NULL);
+    GLFWwindow *window = glfwCreateWindow(1440, 810, "Video", NULL, NULL);
     glfwMakeContextCurrent(window);
     glfwSwapInterval(0);
-
-    const GLubyte *renderer    = glGetString(GL_RENDERER);
-    const GLubyte *vendor      = glGetString(GL_VENDOR);
-    const GLubyte *version     = glGetString(GL_VERSION);
-    const GLubyte *glslVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
-    printf("Renderer: %s\nVendor: %s\nVersion: %s\nGLSL: %s\n", renderer, vendor, version, glslVersion);
 
     GLuint vert = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vert, 1, &vert_src, NULL);
     glCompileShader(vert);
-    GLint status;
-    glGetShaderiv(vert, GL_COMPILE_STATUS, &status);
 
     GLuint frag = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(frag, 1, &frag_src, NULL);
@@ -104,6 +92,7 @@ int main(int argc, char *argv[]) {
         +1.0, +1.0, +1.0, +0.0,
         +1.0, -1.0, +1.0, +1.0,
     };
+    // clang-format on
 
     GLuint vao, vbo;
     glGenVertexArrays(1, &vao);
@@ -115,11 +104,11 @@ int main(int argc, char *argv[]) {
 
     GLuint positionAttrib = glGetAttribLocation(prog, "position");
     glEnableVertexAttribArray(positionAttrib);
-    glVertexAttribPointer(positionAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void *) 0);
+    glVertexAttribPointer(positionAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void *)0);
 
     GLuint texCoordAttrib = glGetAttribLocation(prog, "texCoord");
     glEnableVertexAttribArray(texCoordAttrib);
-    glVertexAttribPointer(texCoordAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid *) (2 * sizeof(GLfloat)));
+    glVertexAttribPointer(texCoordAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid *)(2 * sizeof(GLfloat)));
 
     glUniform1i(glGetUniformLocation(prog, "textureY"), 0);
     glUniform1i(glGetUniformLocation(prog, "textureU"), 1);
@@ -127,7 +116,15 @@ int main(int argc, char *argv[]) {
 
     while (!glfwWindowShouldClose(window)) {
         ret = av_read_frame(in_ctx, p);
+        if (ret == AVERROR_EOF) {
+            av_seek_frame(in_ctx, s->index, 0, 0);
+            avcodec_flush_buffers(cc);
+            continue;
+        }
+        if (ret == AVERROR(EAGAIN)) continue;
+
         if (p->stream_index != s->index) {
+            glfwPollEvents();
             continue;
         }
 
@@ -167,13 +164,6 @@ int main(int argc, char *argv[]) {
 
         av_packet_unref(p);
     }
-
-    av_packet_free(&p);
-    av_frame_free(&f);
-    avcodec_free_context(&cc);
-    avformat_close_input(&in_ctx);
-    glfwDestroyWindow(window);
-    glfwTerminate();
 
     return 0;
 }
