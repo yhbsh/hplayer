@@ -62,12 +62,14 @@ int main(int argc, const char *argv[]) {
 
     if ((ret = glfwInit()) < 0) return ret;
 
+    glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
 
-    if ((window = glfwCreateWindow(1280, 720, "VIDEO", NULL, NULL)) == NULL) return 1;
+    if ((window = glfwCreateWindow(1440, 810, "VIDEO", NULL, NULL)) == NULL) return 1;
 
     glfwSwapInterval(0);
     glfwMakeContextCurrent(window);
@@ -138,10 +140,12 @@ int main(int argc, const char *argv[]) {
 
     while (!glfwWindowShouldClose(window)) {
         ret = av_read_frame(format_context, packet);
-        if (ret == AVERROR_EOF) exit(0);
-        if (ret == AVERROR(EAGAIN)) continue;
+        if (ret == AVERROR_EOF) {
+            av_seek_frame(format_context, stream->index, 0, 0);
+            avcodec_flush_buffers(codec_context);
+        }
 
-        if (packet->stream_index != stream->index) {
+        if (ret == AVERROR(EAGAIN) || packet->stream_index != stream->index) {
             glfwPollEvents();
             av_packet_unref(packet);
             continue;
