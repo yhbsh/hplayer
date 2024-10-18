@@ -6,7 +6,7 @@
 #define GLFW_INCLUDE_GLCOREARB
 #include <GLFW/glfw3.h>
 
-#include <pthread.h>
+#include <assert.h>
 #include <stdio.h>
 
 int64_t launch_time;
@@ -152,6 +152,8 @@ int main(int argc, const char *argv[]) {
             ret = avcodec_receive_frame(codec_context, frame);
             if (ret == AVERROR_EOF || ret == AVERROR(EAGAIN)) break;
             if (ret < 0) exit(1);
+
+            assert(frame->format == AV_PIX_FMT_YUV420P);
 
             int64_t pts = (1000 * 1000 * frame->pts * stream->time_base.num) / stream->time_base.den;
             int64_t rts = av_gettime_relative() - launch_time;
