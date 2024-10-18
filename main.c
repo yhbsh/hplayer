@@ -21,8 +21,6 @@ static AVStream *stream                = NULL;
 static AVPacket *packet                = NULL;
 static AVFrame *frame                  = NULL;
 
-static int frame_ready = 0;
-
 static GLuint textureY, textureU, textureV, program;
 
 static pthread_t thread;
@@ -156,7 +154,6 @@ int main(int argc, const char *argv[]) {
         glfwSwapBuffers(window);
         glfwPollEvents();
 
-        frame_ready = 0;
         pthread_mutex_unlock(&mutex);
     }
 
@@ -193,7 +190,6 @@ void *run_ffmpeg(void *arg) {
 
             if (pts > rts) {
                 pthread_mutex_lock(&mutex);
-                frame_ready = 1;
                 pthread_cond_signal(&cond);
                 pthread_mutex_unlock(&mutex);
                 av_usleep(pts - rts);
