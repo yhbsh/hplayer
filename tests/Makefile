@@ -1,22 +1,31 @@
-CC = gcc
-CFLAGS = -Wall -Wextra -pedantic -std=c11 $(shell pkg-config --cflags libavcodec libavformat libavdevice libavutil sdl2 glfw3)
-LDFLAGS = $(shell pkg-config --libs libavcodec libavformat libavdevice libavutil sdl2 glfw3) -framework OpenGL
+HEADERS    = -Wall -Wextra -pedantic -fobjc-arc -std=c11 -I../deps/include
+LIBRARIES  = -L../deps/lib -lglfw -lavformat -lavcodec -lswscale -lswresample -lavutil -lsdl
+FRAMEWORKS =  -framework  CoreVideo       \
+              -framework  CoreAudio       \
+              -framework  CoreMedia       \
+              -framework  CoreGraphics    \
+              -framework  CoreFoundation  \
+              -framework  CoreHaptics     \
+              -framework  CoreServices    \
+              -framework  Cocoa           \
+              -framework  Carbon          \
+              -framework  IOKit           \
+              -framework  Opengl          \
+              -framework  Videotoolbox    \
+              -framework  AudioToolbox    \
+              -framework  GameController  \
+              -framework  ForceFeedback   \
+              -framework  Metal    
 
-# List of source files
-SOURCES = ffprobe.c hplayer.c monitor.c opengl.c parse.c rtmp.c
+SOURCES    = ffprobe.c hplayer.c opengl.c parse.c rtmp.c
+TARGETS    = $(SOURCES:.c=)
 
-# Generate a list of executables by replacing .c with nothing
-EXECUTABLES = $(SOURCES:.c=)
+all: $(TARGETS)
 
-# Default target
-all: $(EXECUTABLES)
-
-# Rule to build each executable
 %: %.c
-	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS)
+	clang $(HEADERS) $< -o $@ $(LIBRARIES) $(FRAMEWORKS)
 
-# Clean up built executables
 clean:
-	rm -f $(EXECUTABLES)
+	rm -f $(TARGETS)
 
 .PHONY: all clean

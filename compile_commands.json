@@ -1,0 +1,37 @@
+[
+ {
+  "directory": "/Users/home/Dev/c/hplayer",
+  "arguments": [
+   "clang",
+   "-O3",
+   "-I./deps/include",
+   "main.c",
+   "-o",
+   "main",
+   "-L./deps/lib",
+   "-lglfw",
+   "-lavformat",
+   "-lavcodec",
+   "-lswscale",
+   "-lswresample",
+   "-lavutil",
+   "-framework",
+   "CoreMedia",
+   "-framework",
+   "CoreVideo",
+   "-framework",
+   "Videotoolbox",
+   "-framework",
+   "OpenGL",
+   "-framework",
+   "Cocoa",
+   "-framework",
+   "IOKit",
+   "-framework",
+   "CoreAudio",
+   "-framework",
+   "AudioToolbox"
+  ],
+  "file": "main.c"
+ }
+]

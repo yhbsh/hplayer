@@ -1,10 +1,6 @@
-CC       := clang
-CFLAGS   := $(shell pkg-config --cflags libavcodec libavformat libavutil glfw3)
-CFLAGS   += -Wall -Wextra -O3
-LFLAGS   := $(shell pkg-config --libs libavcodec libavformat libavutil glfw3)
+HEADERS    = -O3 -I./deps/include 
+LIBRARIES  = -L./deps/lib -lglfw -lavformat -lavcodec -lswscale -lswresample -lavutil
+FRAMEWORKS = -framework CoreMedia -framework CoreVideo -framework Videotoolbox -framework OpenGL -framework Cocoa -framework IOKit -framework CoreAudio -framework AudioToolbox
 
-main: main.c pl.c
-	cc $(CFLAGS) main.c pl.c -o pl $(LFLAGS)
-
-clean:
-	rm -rf pl *.dSYM
+main: main.c
+	clang $(HEADERS) main.c -o main $(LIBRARIES) $(FRAMEWORKS)

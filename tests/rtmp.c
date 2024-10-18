@@ -1,5 +1,4 @@
 #include <libavcodec/avcodec.h>
-#include <libavdevice/avdevice.h>
 #include <libavformat/avformat.h>
 #include <libavutil/pixdesc.h>
 #include <libavutil/time.h>
@@ -29,8 +28,6 @@ int main(void) {
     int64_t next_pts              = +0;
 
     av_log_set_level(AV_LOG_TRACE);
-    avdevice_register_all();
-    avformat_network_init();
 
     in_fmt_ctx                  = avformat_alloc_context();
     ret                         = avformat_open_input(&in_fmt_ctx, "../samples/sample.hevc", NULL, NULL);
@@ -65,8 +62,8 @@ int main(void) {
     out_frame->width            = out_codec_ctx->width;
     out_frame->height           = out_codec_ctx->height;
     ret                         = av_frame_get_buffer(out_frame, 0);
-    sws_ctx = sws_getContext(in_codec_ctx->width, in_codec_ctx->height, in_codec_ctx->pix_fmt, out_codec_ctx->width, out_codec_ctx->height, out_codec_ctx->pix_fmt, SWS_BICUBIC, NULL, NULL, NULL);
-    start   = av_gettime();
+    sws_ctx                     = sws_getContext(in_codec_ctx->width, in_codec_ctx->height, in_codec_ctx->pix_fmt, out_codec_ctx->width, out_codec_ctx->height, out_codec_ctx->pix_fmt, SWS_BICUBIC, NULL, NULL, NULL);
+    start                       = av_gettime();
 
     printf("in_cocdec_ctx->pix_fmt: %s - out_codec_ctx: %s\n", av_get_pix_fmt_name(in_codec_ctx->pix_fmt), av_get_pix_fmt_name(out_codec_ctx->pix_fmt));
 

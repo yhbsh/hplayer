@@ -9,16 +9,17 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    AVFormatContext *in_ctx = NULL;
     int ret;
-    const char *url   = argv[1];
-    ret               = avformat_open_input(&in_ctx, url, NULL, NULL);
-    ret               = avformat_find_stream_info(in_ctx, NULL);
-    const AVStream *s = in_ctx->streams[1];
-    const AVCodec *c  = avcodec_find_decoder(s->codecpar->codec_id);
+    AVFormatContext *format_context = NULL;
+    if ((ret = avformat_open_input(&format_context, argv[1], NULL, NULL)) < 0) {
+        return 1;
+    }
 
-    av_dump_format(in_ctx, 0, url, 0);
-    printf("name = %s\nlong_name = %s\n", c->name, c->long_name);
+    if ((ret = avformat_find_stream_info(format_context, NULL)) < 0) {
+        return 1;
+    }
+
+    av_dump_format(format_context, 0, argv[1], 0);
 
     return 0;
 }
