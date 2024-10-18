@@ -1,5 +1,6 @@
 [
  {
+  "directory": "/Users/home/Dev/hplayer",
   "arguments": [
    "clang",
    "-DGL_SILENCE_DEPRECATION",
@@ -38,6 +39,7 @@
   "file": "main.c"
  },
  {
+  "directory": "/Users/home/Dev/hplayer",
   "arguments": [
    "clang",
    "-DGL_SILENCE_DEPRECATION",
