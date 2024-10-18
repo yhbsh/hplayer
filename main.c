@@ -6,7 +6,28 @@
 #define GLFW_INCLUDE_GLCOREARB
 #include <GLFW/glfw3.h>
 
+#include <pthread.h>
 #include <stdio.h>
+
+int64_t app_time;
+int ret;
+
+static GLFWwindow *window = NULL;
+
+static AVFormatContext *format_context = NULL;
+static AVCodecContext *codec_context   = NULL;
+static const AVCodec *codec            = NULL;
+static AVStream *stream                = NULL;
+static AVPacket *packet                = NULL;
+static AVFrame *frame                  = NULL;
+
+static int frame_ready = 0;
+
+static GLuint textureY, textureU, textureV, program;
+
+static pthread_t thread;
+static pthread_mutex_t mutex;
+static pthread_cond_t cond;
 
 static const char *vertex_shader_source = "#version 410\n"
                                           "layout (location = 0) in vec2 position;\n"
@@ -90,27 +111,134 @@ static const char *fragment_shader_source_nv12 = "#version 410\n"
                                                  "    fragColor = vec4(rgb, 1.0);\n"
                                                  "}\n";
 
-void init_window(GLFWwindow **window) {
-    int ret = 0;
+void init_ffmpeg(const char *url);
+void init_window(GLFWwindow **window);
+void init_textures(GLuint *textureY, GLuint *textureU, GLuint *textureV, GLuint program);
+void init_compile_link_gl_program(GLuint *program);
 
-    if ((ret = glfwInit()) < 0) {
-        return;
+int main(int argc, const char *argv[]) {
+    app_time = av_gettime_relative();
+
+    if (argc != 2) {
+        printf("USAGE: ./main <url>\n");
+        return 1;
     }
+
+    init_window(&window);
+    init_compile_link_gl_program(&program);
+    init_textures(&textureY, &textureU, &textureV, program);
+    init_ffmpeg(argv[1]);
+
+    while (!glfwWindowShouldClose(window)) {
+        pthread_mutex_lock(&mutex);
+        pthread_cond_wait(&cond, &mutex);
+
+        // printf("VIDEO %05lld | PTS %llds %03lldms %03lldus | RTS %llds %03lldms %03lldus\n", vcodec_context->frame_num, pts_seconds, pts_milliseconds, pts_microseconds, rts_seconds, rts_milliseconds, rts_microseconds);
+        printf("| %p | %p | %p | %d | %d |\n", frame->data[0], frame->data[1], frame->data[2], frame->width, frame->height);
+
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, textureY);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, frame->width / 1, frame->height / 1, 0, GL_RED, GL_UNSIGNED_BYTE, frame->data[0]);
+
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, textureU);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, frame->width / 2, frame->height / 2, 0, GL_RED, GL_UNSIGNED_BYTE, frame->data[1]);
+
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_2D, textureV);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, frame->width / 2, frame->height / 2, 0, GL_RED, GL_UNSIGNED_BYTE, frame->data[2]);
+
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+
+        frame_ready = 0;
+        pthread_mutex_unlock(&mutex);
+    }
+
+    return 0;
+}
+
+void *run_ffmpeg(void *arg) {
+    while (1) {
+        ret = av_read_frame(format_context, packet);
+        if (ret == AVERROR_EOF) break;
+        if (ret == AVERROR(EAGAIN)) continue;
+
+        if (packet->stream_index != stream->index) {
+            av_packet_unref(packet);
+            continue;
+        }
+
+        ret = avcodec_send_packet(codec_context, packet);
+        while (ret >= 0) {
+            ret = avcodec_receive_frame(codec_context, frame);
+            if (ret == AVERROR_EOF || ret == AVERROR(EAGAIN)) break;
+            if (ret < 0) exit(1);
+
+            int64_t pts = (1000 * 1000 * frame->pts * stream->time_base.num) / stream->time_base.den;
+            int64_t rts = av_gettime_relative() - app_time;
+
+            int64_t pts_seconds      = (pts / 1000000);
+            int64_t pts_milliseconds = (pts % 1000000) / 1000;
+            int64_t pts_microseconds = pts % 1000;
+
+            int64_t rts_seconds      = (rts / 1000000);
+            int64_t rts_milliseconds = (rts % 1000000) / 1000;
+            int64_t rts_microseconds = rts % 1000;
+
+            if (pts > rts) {
+                pthread_mutex_lock(&mutex);
+                frame_ready = 1;
+                pthread_cond_signal(&cond);
+                pthread_mutex_unlock(&mutex);
+                av_usleep(pts - rts);
+            }
+        }
+
+        av_packet_unref(packet);
+    }
+
+    return NULL;
+}
+
+void init_ffmpeg(const char *url) {
+    if ((ret = avformat_open_input(&format_context, url, NULL, NULL)) < 0) exit(1);
+    if ((ret = avformat_find_stream_info(format_context, NULL)) < 0) exit(1);
+    if ((ret = av_find_best_stream(format_context, AVMEDIA_TYPE_VIDEO, -1, -1, &codec, 0)) < 0) exit(1);
+
+    stream = format_context->streams[ret];
+
+    if ((codec_context = avcodec_alloc_context3(codec)) == NULL) exit(1);
+    if ((ret = avcodec_parameters_to_context(codec_context, stream->codecpar)) < 0) exit(1);
+    if ((ret = avcodec_open2(codec_context, codec, NULL)) < 0) exit(1);
+    if ((packet = av_packet_alloc()) == NULL) exit(1);
+    if ((frame = av_frame_alloc()) == NULL) exit(1);
+
+    pthread_mutex_init(&mutex, NULL);
+    pthread_cond_init(&cond, NULL);
+    pthread_create(&thread, NULL, run_ffmpeg, &url);
+}
+void init_window(GLFWwindow **window) {
+    if ((ret = glfwInit()) < 0) return;
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
 
-    if ((*window = glfwCreateWindow(1920, 1080, "VIDEO", NULL, NULL)) == NULL) {
-        return;
-    }
+    if ((*window = glfwCreateWindow(1280, 720, "VIDEO", NULL, NULL)) == NULL) return;
 
     glfwSwapInterval(0);
     glfwMakeContextCurrent(*window);
+    glfwSwapInterval(0);
 }
 
-void init_compile_link_gl_program(GLuint *program, const char *file_path) {
+void init_compile_link_gl_program(GLuint *program) {
     GLuint vertex_shader, fragment_shader;
 
     vertex_shader = glCreateShader(GL_VERTEX_SHADER);
@@ -181,177 +309,4 @@ void init_textures(GLuint *textureY, GLuint *textureU, GLuint *textureV, GLuint 
     glUniform1i(glGetUniformLocation(program, "textureY"), 0);
     glUniform1i(glGetUniformLocation(program, "textureU"), 1);
     glUniform1i(glGetUniformLocation(program, "textureV"), 2);
-}
-
-int main(int argc, const char *argv[]) {
-    int64_t begin = av_gettime_relative();
-
-    if (argc != 2) {
-        printf("USAGE: ./main <url>\n");
-        return 1;
-    }
-
-    int ret;
-    GLFWwindow *window              = NULL;
-    const AVCodec *vcodec           = NULL;
-    const AVCodec *acodec           = NULL;
-    AVFormatContext *format_context = NULL;
-    AVCodecContext *vcodec_context  = NULL;
-    AVCodecContext *acodec_context  = NULL;
-    AVStream *vstream               = NULL;
-    AVStream *astream               = NULL;
-    AVPacket *packet                = NULL;
-    AVFrame *frame                  = NULL;
-    GLuint textureY, textureU, textureV, program;
-
-    // av_log_set_level(AV_LOG_TRACE);
-
-    init_window(&window);
-    init_compile_link_gl_program(&program, "");
-    init_textures(&textureY, &textureU, &textureV, program);
-
-    if ((ret = avformat_open_input(&format_context, argv[1], NULL, NULL)) < 0) {
-        fprintf(stderr, "[ERROR]: avformat_open_input: %s\n", av_err2str(ret));
-        return ret;
-    }
-    if ((ret = avformat_find_stream_info(format_context, NULL)) < 0) {
-        fprintf(stderr, "[ERROR]: avformat_find_stream_info: %s\n", av_err2str(ret));
-        return ret;
-    }
-
-    if ((ret = av_find_best_stream(format_context, AVMEDIA_TYPE_VIDEO, -1, -1, &vcodec, 0)) >= 0) {
-        vstream = format_context->streams[ret];
-        if ((vcodec_context = avcodec_alloc_context3(vcodec)) == NULL) {
-            printf("No Video\n");
-            return ret;
-        }
-        if ((ret = avcodec_parameters_to_context(vcodec_context, vstream->codecpar)) < 0) {
-            fprintf(stderr, "[ERROR]: avcodec_parameters_to_context: %s\n", av_err2str(ret));
-            return ret;
-        }
-        if ((ret = avcodec_open2(vcodec_context, vcodec, NULL)) < 0) {
-            return ret;
-        }
-    } else {
-        fprintf(stderr, "[WARNING]: %s\n", av_err2str(ret));
-    }
-
-    if ((ret = av_find_best_stream(format_context, AVMEDIA_TYPE_AUDIO, -1, -1, &acodec, 0)) >= 0) {
-        astream = format_context->streams[ret];
-        if ((acodec_context = avcodec_alloc_context3(acodec)) == NULL) {
-            printf("No Audio\n");
-        }
-        if ((ret = avcodec_parameters_to_context(acodec_context, astream->codecpar)) < 0) {
-            fprintf(stderr, "[ERROR]: avcodec_parameters_to_context: %s\n", av_err2str(ret));
-            return ret;
-        }
-        if ((ret = avcodec_open2(acodec_context, acodec, NULL)) < 0) {
-            return ret;
-        }
-    } else {
-        fprintf(stderr, "[WARNING]: %s\n", av_err2str(ret));
-    }
-
-    if ((packet = av_packet_alloc()) == NULL) {
-        return 1;
-    }
-
-    if ((frame = av_frame_alloc()) == NULL) {
-        return 1;
-    }
-
-    while (!glfwWindowShouldClose(window)) {
-
-        ret = av_read_frame(format_context, packet);
-        if (ret == AVERROR_EOF) break;
-        if (ret == AVERROR(EAGAIN)) continue;
-
-        if (astream && acodec_context && packet->stream_index == astream->index) {
-            ret = avcodec_send_packet(acodec_context, packet);
-            while (ret >= 0) {
-                ret = avcodec_receive_frame(acodec_context, frame);
-                if (ret == AVERROR_EOF || ret == AVERROR(EAGAIN)) break;
-                if (ret < 0) {
-                    fprintf(stderr, "avcodec_receive_frame: %s\n", av_err2str(ret));
-                    return 1;
-                }
-
-                int64_t pts = (1000 * 1000 * frame->pts * astream->time_base.num) / astream->time_base.den;
-                int64_t rts = av_gettime_relative() - begin;
-
-                int64_t pts_seconds      = (pts / 1000000);
-                int64_t pts_milliseconds = (pts % 1000000) / 1000;
-                int64_t pts_microseconds = pts % 1000;
-
-                int64_t rts_seconds      = (rts / 1000000);
-                int64_t rts_milliseconds = (rts % 1000000) / 1000;
-                int64_t rts_microseconds = rts % 1000;
-
-                printf("AUDIO %05lld | PTS %llds %03lldms %03lldus | RTS %llds %03lldms %03lldus\n", acodec_context->frame_num, pts_seconds, pts_milliseconds, pts_microseconds, rts_seconds, rts_milliseconds, rts_microseconds);
-
-                glfwPollEvents();
-                // if (pts > rts) {
-                //     if ((ret = av_usleep(pts - rts)) < 0) {
-                //         fprintf(stderr, "[ERROR]: av_usleep: %s\n", av_err2str(ret));
-                //     }
-                //}
-                av_frame_unref(frame);
-            }
-        }
-
-        if (vstream && vcodec_context && packet->stream_index == vstream->index) {
-            ret = avcodec_send_packet(vcodec_context, packet);
-            while (ret >= 0) {
-                ret = avcodec_receive_frame(vcodec_context, frame);
-                if (ret == AVERROR_EOF || ret == AVERROR(EAGAIN)) break;
-                if (ret < 0) {
-                    fprintf(stderr, "avcodec_receive_frame: %s\n", av_err2str(ret));
-                    return 1;
-                }
-
-                int64_t pts = (1000 * 1000 * frame->pts * vstream->time_base.num) / vstream->time_base.den;
-                int64_t rts = av_gettime_relative() - begin;
-
-                int64_t pts_seconds      = (pts / 1000000);
-                int64_t pts_milliseconds = (pts % 1000000) / 1000;
-                int64_t pts_microseconds = pts % 1000;
-
-                int64_t rts_seconds      = (rts / 1000000);
-                int64_t rts_milliseconds = (rts % 1000000) / 1000;
-                int64_t rts_microseconds = rts % 1000;
-
-                printf("VIDEO %05lld | PTS %llds %03lldms %03lldus | RTS %llds %03lldms %03lldus\n", vcodec_context->frame_num, pts_seconds, pts_milliseconds, pts_microseconds, rts_seconds, rts_milliseconds, rts_microseconds);
-
-                if (pts > rts) {
-                    if ((ret = av_usleep(pts - rts)) < 0) {
-                        fprintf(stderr, "[ERROR]: av_usleep: %s\n", av_err2str(ret));
-                    }
-                }
-
-                glClear(GL_COLOR_BUFFER_BIT);
-                glActiveTexture(GL_TEXTURE0);
-                glBindTexture(GL_TEXTURE_2D, textureY);
-                glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, frame->width / 1, frame->height / 1, 0, GL_RED, GL_UNSIGNED_BYTE, frame->data[0]);
-
-                glActiveTexture(GL_TEXTURE1);
-                glBindTexture(GL_TEXTURE_2D, textureU);
-                glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, frame->width / 2, frame->height / 2, 0, GL_RED, GL_UNSIGNED_BYTE, frame->data[1]);
-
-                glActiveTexture(GL_TEXTURE2);
-                glBindTexture(GL_TEXTURE_2D, textureV);
-                glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, frame->width / 2, frame->height / 2, 0, GL_RED, GL_UNSIGNED_BYTE, frame->data[2]);
-
-                glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-
-                glfwPollEvents();
-                glfwSwapBuffers(window);
-
-                av_frame_unref(frame);
-            }
-        }
-
-        av_packet_unref(packet);
-    }
-
-    return 0;
 }
