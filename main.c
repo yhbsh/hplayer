@@ -23,10 +23,6 @@ static AVFrame *frame                  = NULL;
 
 static GLuint textures[3], program, vertex_shader, fragment_shader;
 
-static pthread_t thread;
-static pthread_mutex_t mutex;
-static pthread_cond_t cond;
-
 static const char *vertex_shader_source = "#version 410\n"
                                           "layout (location = 0) in vec2 position;\n"
                                           "layout (location = 1) in vec2 texCoord;\n"
@@ -55,8 +51,6 @@ static const char *fragment_shader_source = "#version 410 core\n"
                                             "    b = y + 2.017 * u;\n"
                                             "    fragColor = vec4(r, g, b, 1.0);\n"
                                             "}\n";
-
-void *run_ffmpeg(void *arg);
 
 int main(int argc, const char *argv[]) {
     launch_time = av_gettime_relative();
@@ -142,54 +136,13 @@ int main(int argc, const char *argv[]) {
     if ((packet = av_packet_alloc()) == NULL) exit(1);
     if ((frame = av_frame_alloc()) == NULL) exit(1);
 
-    pthread_mutex_init(&mutex, NULL);
-    pthread_cond_init(&cond, NULL);
-    pthread_create(&thread, NULL, run_ffmpeg, NULL);
-
     while (!glfwWindowShouldClose(window)) {
-        pthread_mutex_lock(&mutex);
-        pthread_cond_wait(&cond, &mutex);
-
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textures[0]);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, frame->width / 1, frame->height / 1, 0, GL_RED, GL_UNSIGNED_BYTE, frame->data[0]);
-
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, textures[1]);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, frame->width / 2, frame->height / 2, 0, GL_RED, GL_UNSIGNED_BYTE, frame->data[1]);
-
-        glActiveTexture(GL_TEXTURE2);
-        glBindTexture(GL_TEXTURE_2D, textures[2]);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, frame->width / 2, frame->height / 2, 0, GL_RED, GL_UNSIGNED_BYTE, frame->data[2]);
-
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-
-        pthread_mutex_unlock(&mutex);
-    }
-
-    return 0;
-}
-
-void *run_ffmpeg(void *arg) {
-    (void)arg;
-    while (1) {
         ret = av_read_frame(format_context, packet);
-        if (ret == AVERROR_EOF) break;
+        if (ret == AVERROR_EOF) exit(0);
         if (ret == AVERROR(EAGAIN)) continue;
 
         if (packet->stream_index != stream->index) {
+            glfwPollEvents();
             av_packet_unref(packet);
             continue;
         }
@@ -203,24 +156,39 @@ void *run_ffmpeg(void *arg) {
             int64_t pts = (1000 * 1000 * frame->pts * stream->time_base.num) / stream->time_base.den;
             int64_t rts = av_gettime_relative() - launch_time;
 
-            int64_t pts_seconds      = (pts / 1000000);
-            int64_t pts_milliseconds = (pts % 1000000) / 1000;
-            int64_t pts_microseconds = pts % 1000;
-
-            int64_t rts_seconds      = (rts / 1000000);
-            int64_t rts_milliseconds = (rts % 1000000) / 1000;
-            int64_t rts_microseconds = rts % 1000;
-
             if (pts > rts) {
-                pthread_mutex_lock(&mutex);
-                pthread_cond_signal(&cond);
-                pthread_mutex_unlock(&mutex);
                 av_usleep(pts - rts);
             }
+
+            glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT);
+
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, textures[0]);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, frame->width / 1, frame->height / 1, 0, GL_RED, GL_UNSIGNED_BYTE, frame->data[0]);
+
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_2D, textures[1]);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, frame->width / 2, frame->height / 2, 0, GL_RED, GL_UNSIGNED_BYTE, frame->data[1]);
+
+            glActiveTexture(GL_TEXTURE2);
+            glBindTexture(GL_TEXTURE_2D, textures[2]);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, frame->width / 2, frame->height / 2, 0, GL_RED, GL_UNSIGNED_BYTE, frame->data[2]);
+
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+            glfwSwapBuffers(window);
+            glfwPollEvents();
         }
 
         av_packet_unref(packet);
     }
 
-    return NULL;
+    return 0;
 }
