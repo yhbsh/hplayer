@@ -186,6 +186,8 @@ void init_textures(GLuint *textureY, GLuint *textureU, GLuint *textureV, GLuint 
 }
 
 int main(int argc, const char *argv[]) {
+    int64_t begin = av_gettime_relative();
+
     if (argc != 2) {
         printf("USAGE: ./main <url>\n");
         return 1;
@@ -260,8 +262,6 @@ int main(int argc, const char *argv[]) {
         return 1;
     }
 
-    int64_t begin = av_gettime_relative();
-
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
 
@@ -297,6 +297,7 @@ int main(int argc, const char *argv[]) {
                 //         fprintf(stderr, "[ERROR]: av_usleep: %s\n", av_err2str(ret));
                 //     }
                 //}
+                av_frame_unref(frame);
             }
         }
 
@@ -321,7 +322,7 @@ int main(int argc, const char *argv[]) {
                 int64_t rts_milliseconds = (rts % 1000000) / 1000;
                 int64_t rts_microseconds = rts % 1000;
 
-                printf("VIDEO %05lld | PTS %llds %03lldms %03lldus | RTS %llds %03lldms %03lldus\n", acodec_context->frame_num, pts_seconds, pts_milliseconds, pts_microseconds, rts_seconds, rts_milliseconds, rts_microseconds);
+                printf("VIDEO %05lld | PTS %llds %03lldms %03lldus | RTS %llds %03lldms %03lldus\n", vcodec_context->frame_num, pts_seconds, pts_milliseconds, pts_microseconds, rts_seconds, rts_milliseconds, rts_microseconds);
 
                 if (pts > rts) {
                     if ((ret = av_usleep(pts - rts)) < 0) {
@@ -344,6 +345,7 @@ int main(int argc, const char *argv[]) {
 
                 glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
                 glfwSwapBuffers(window);
+                av_frame_unref(frame);
             }
         }
 
