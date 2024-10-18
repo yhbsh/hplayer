@@ -97,18 +97,16 @@ void init_window(GLFWwindow **window) {
         return;
     }
 
-    glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
-    glfwWindowHint(GLFW_REFRESH_RATE, 180);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
     if ((*window = glfwCreateWindow(1920, 1080, "VIDEO", NULL, NULL)) == NULL) {
         return;
     }
 
+    glfwSwapInterval(0);
     glfwMakeContextCurrent(*window);
 }
 
@@ -263,7 +261,6 @@ int main(int argc, const char *argv[]) {
     }
 
     while (!glfwWindowShouldClose(window)) {
-        glfwPollEvents();
 
         ret = av_read_frame(format_context, packet);
         if (ret == AVERROR_EOF) break;
@@ -292,6 +289,7 @@ int main(int argc, const char *argv[]) {
 
                 printf("AUDIO %05lld | PTS %llds %03lldms %03lldus | RTS %llds %03lldms %03lldus\n", acodec_context->frame_num, pts_seconds, pts_milliseconds, pts_microseconds, rts_seconds, rts_milliseconds, rts_microseconds);
 
+                glfwPollEvents();
                 // if (pts > rts) {
                 //     if ((ret = av_usleep(pts - rts)) < 0) {
                 //         fprintf(stderr, "[ERROR]: av_usleep: %s\n", av_err2str(ret));
@@ -344,7 +342,10 @@ int main(int argc, const char *argv[]) {
                 glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, frame->width / 2, frame->height / 2, 0, GL_RED, GL_UNSIGNED_BYTE, frame->data[2]);
 
                 glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+                glfwPollEvents();
                 glfwSwapBuffers(window);
+
                 av_frame_unref(frame);
             }
         }
