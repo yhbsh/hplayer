@@ -1,43 +1,8 @@
 [
  {
-  "directory": "/Users/home/Dev/c/hplayer",
   "arguments": [
    "clang",
-   "-O3",
-   "-I./deps/include",
-   "main.c",
-   "-o",
-   "main",
-   "-L./deps/lib",
-   "-lglfw",
-   "-lavformat",
-   "-lavcodec",
-   "-lswscale",
-   "-lswresample",
-   "-lavutil",
-   "-framework",
-   "CoreMedia",
-   "-framework",
-   "CoreVideo",
-   "-framework",
-   "Videotoolbox",
-   "-framework",
-   "OpenGL",
-   "-framework",
-   "Cocoa",
-   "-framework",
-   "IOKit",
-   "-framework",
-   "CoreAudio",
-   "-framework",
-   "AudioToolbox"
-  ],
-  "file": "main.c"
- },
- {
-  "directory": "/Users/home/Dev/pl",
-  "arguments": [
-   "clang",
+   "-DGL_SILENCE_DEPRECATION",
    "-Wall",
    "-Wextra",
    "-std=c11",
@@ -71,5 +36,43 @@
    "AudioToolbox"
   ],
   "file": "main.c"
+ },
+ {
+  "arguments": [
+   "clang",
+   "-DGL_SILENCE_DEPRECATION",
+   "-Wall",
+   "-Wextra",
+   "-std=c11",
+   "-O3",
+   "-I./deps/include",
+   "main.m",
+   "-o",
+   "main",
+   "-L./deps/lib",
+   "-lglfw",
+   "-lavformat",
+   "-lavcodec",
+   "-lswscale",
+   "-lswresample",
+   "-lavutil",
+   "-framework",
+   "CoreMedia",
+   "-framework",
+   "CoreVideo",
+   "-framework",
+   "Videotoolbox",
+   "-framework",
+   "OpenGL",
+   "-framework",
+   "Cocoa",
+   "-framework",
+   "IOKit",
+   "-framework",
+   "CoreAudio",
+   "-framework",
+   "AudioToolbox"
+  ],
+  "file": "main.m"
  }
 ]

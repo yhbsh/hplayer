@@ -1,26 +1,10 @@
+#import <Cocoa/Cocoa.h>
+#import <OpenGL/gl3.h>
+
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 #include <libavutil/time.h>
-
-#define GLFW_INCLUDE_GLCOREARB
-#include <GLFW/glfw3.h>
-
-#include <assert.h>
-#include <stdio.h>
-
-int ret;
-int64_t launch_time = 0;
-
-static GLFWwindow *window = NULL;
-
-static AVFormatContext *format_context = NULL;
-static AVCodecContext *codec_context   = NULL;
-static const AVCodec *codec            = NULL;
-static AVStream *stream                = NULL;
-static AVPacket *packet                = NULL;
-static AVFrame *frame                  = NULL;
-
-static GLuint textures[3], program, vertex_shader, fragment_shader;
+#include <libavutil/pixdesc.h>
 
 static const char *vertex_shader_source = "#version 410\n"
                                           "layout (location = 0) in vec2 position;\n"
@@ -52,28 +36,60 @@ static const char *fragment_shader_source = "#version 410 core\n"
                                             "}\n";
 
 int main(int argc, const char *argv[]) {
+    static int ret;
+    static int64_t launch_time = 0;
+
+    static AVFormatContext *format_context = NULL;
+    static AVCodecContext *codec_context   = NULL;
+    static const AVCodec *codec            = NULL;
+    static AVStream *stream                = NULL;
+    static AVPacket *packet                = NULL;
+    static AVFrame *frame                  = NULL;
+
+    static GLuint textures[3], program, vertex_shader, fragment_shader;
+
+    // clang-format off
+    NSOpenGLPixelFormatAttribute pixelFormatAttributes[] = {
+        NSOpenGLPFAOpenGLProfile,
+        NSOpenGLProfileVersion4_1Core,
+        NSOpenGLPFAColorSize,
+        24,
+        NSOpenGLPFAAlphaSize,
+        8,
+        NSOpenGLPFADoubleBuffer,
+        NSOpenGLPFAAccelerated,
+        0,
+    };
+    NSOpenGLPixelFormat *pixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:pixelFormatAttributes];
+    // clang-format on
+
+    NSApplication *app = [NSApplication sharedApplication];
+    [app setActivationPolicy:NSApplicationActivationPolicyRegular];
+    [app activateIgnoringOtherApps:YES];
+
+    NSRect rect = [[NSScreen mainScreen] frame];
+
+    NSOpenGLView *glView = [[NSOpenGLView alloc] init];
+    [glView setPixelFormat:pixelFormat];
+
+    NSOpenGLContext *glContext = [glView openGLContext];
+    [glContext makeCurrentContext];
+
+    NSWindow *window = [[NSWindow alloc] init];
+    [window setContentSize:rect.size];
+    [window setContentView:glView];
+    [window setStyleMask:NSWindowStyleMaskFullSizeContentView];
+    [window setBackingType:NSBackingStoreBuffered];
+    [window makeKeyWindow];
+    [window orderFront:nil];
+    [window center];
+
     launch_time = av_gettime_relative();
 
     if (argc != 2) {
         printf("USAGE: ./main <url>\n");
         return 1;
     }
-
-    if ((ret = glfwInit()) < 0) return ret;
-
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
-
-    GLFWmonitor *monitor    = glfwGetPrimaryMonitor();
-    const GLFWvidmode *mode = glfwGetVideoMode(monitor);
-
-    if ((window = glfwCreateWindow(mode->width, mode->height, "VIDEO", monitor, NULL)) == NULL) return 1;
-
-    glfwSwapInterval(0);
-    glfwMakeContextCurrent(window);
-    glfwSwapInterval(0);
 
     vertex_shader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertex_shader, 1, &vertex_shader_source, NULL);
@@ -138,7 +154,17 @@ int main(int argc, const char *argv[]) {
     if ((packet = av_packet_alloc()) == NULL) exit(1);
     if ((frame = av_frame_alloc()) == NULL) exit(1);
 
-    while (!glfwWindowShouldClose(window)) {
+    while (true) {
+        NSEvent *event;
+        while ((event = [app nextEventMatchingMask:NSEventMaskAny untilDate:nil inMode:NSDefaultRunLoopMode dequeue:YES])) {
+            [app sendEvent:event];
+            [app updateWindows];
+
+            if ([event type] == NSEventTypeKeyDown) {
+                if ([event keyCode] == 12) exit(0);
+            }
+        }
+
         ret = av_read_frame(format_context, packet);
         if (ret == AVERROR_EOF) {
             av_seek_frame(format_context, -1, 0, AVSEEK_FLAG_ANY);
@@ -146,21 +172,8 @@ int main(int argc, const char *argv[]) {
         }
 
         if (ret == AVERROR(EAGAIN) || packet->stream_index != stream->index) {
-            glfwPollEvents();
             av_packet_unref(packet);
             continue;
-        }
-
-        if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
-            exit(0);
-        }
-
-        if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-            av_seek_frame(format_context, stream->index, 0, AVSEEK_FLAG_ANY);
-        }
-
-        if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-            av_seek_frame(format_context, stream->index, 0, AVSEEK_FLAG_ANY);
         }
 
         ret = avcodec_send_packet(codec_context, packet);
@@ -169,7 +182,10 @@ int main(int argc, const char *argv[]) {
             if (ret == AVERROR_EOF || ret == AVERROR(EAGAIN)) break;
             if (ret < 0) exit(1);
 
-            assert(frame->format == AV_PIX_FMT_YUV420P || frame->format == AV_PIX_FMT_YUVJ420P);
+            if ((frame->format != AV_PIX_FMT_YUV420P) && (frame->format != AV_PIX_FMT_YUVJ420P)) {
+                NSLog(@"Pixel format %s not supported", av_get_pix_fmt_name(frame->format));
+                exit(0);
+            }
 
             int64_t pts = (1000 * 1000 * frame->pts * stream->time_base.num) / stream->time_base.den;
             int64_t rts = av_gettime_relative() - launch_time;
@@ -200,8 +216,7 @@ int main(int argc, const char *argv[]) {
 
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
-            glfwSwapBuffers(window);
-            glfwPollEvents();
+            [glContext flushBuffer];
         }
 
         av_packet_unref(packet);
