@@ -8,4 +8,4 @@ main: main.c
 	clang $(HEADERS) main.c -o main $(LIBRARIES) $(FRAMEWORKS)
 
 main_objc: main.m
-	clang $(HEADERS) main.m -o main $(LIBRARIES) $(FRAMEWORKS)
+	clang $(HEADERS) main.m -o main_objc $(LIBRARIES) $(FRAMEWORKS)

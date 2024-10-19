@@ -1,5 +1,6 @@
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
+#include <libavutil/pixdesc.h>
 #include <libavutil/time.h>
 
 #define GLFW_INCLUDE_GLCOREARB
@@ -126,7 +127,7 @@ int main(int argc, const char *argv[]) {
     glUniform1i(glGetUniformLocation(program, "textureU"), 1);
     glUniform1i(glGetUniformLocation(program, "textureV"), 2);
 
-    av_log_set_level(AV_LOG_TRACE);
+    // av_log_set_level(AV_LOG_TRACE);
 
     if ((ret = avformat_open_input(&format_context, argv[1], NULL, NULL)) < 0) exit(1);
     if ((ret = avformat_find_stream_info(format_context, NULL)) < 0) exit(1);
@@ -177,7 +178,7 @@ int main(int argc, const char *argv[]) {
             int64_t rts = av_gettime_relative() - launch_time;
             if (pts > rts) av_usleep(pts - rts);
 
-            printf("%04lld | PTS %llds %03lldms %03lldus | RTS %llds %03lldms %03lldus\n", codec_context->frame_num, pts / 1000000, (pts % 1000000) / 1000, pts % 1000, rts / 1000000, (rts % 1000000) / 1000, rts % 1000);
+            printf("%04lld | PTS %llds %03lldms %03lldus | RTS %llds %03lldms %03lldus | FMT: %s\n", codec_context->frame_num, pts / 1000000, (pts % 1000000) / 1000, pts % 1000, rts / 1000000, (rts % 1000000) / 1000, rts % 1000, av_get_pix_fmt_name(frame->format));
 
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
