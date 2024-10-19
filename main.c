@@ -126,6 +126,8 @@ int main(int argc, const char *argv[]) {
     glUniform1i(glGetUniformLocation(program, "textureU"), 1);
     glUniform1i(glGetUniformLocation(program, "textureV"), 2);
 
+    av_log_set_level(AV_LOG_TRACE);
+
     if ((ret = avformat_open_input(&format_context, argv[1], NULL, NULL)) < 0) exit(1);
     if ((ret = avformat_find_stream_info(format_context, NULL)) < 0) exit(1);
     if ((ret = av_find_best_stream(format_context, AVMEDIA_TYPE_VIDEO, -1, -1, &codec, 0)) < 0) exit(1);
