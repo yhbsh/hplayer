@@ -82,13 +82,13 @@ int main(int argc, const char *argv[]) {
     if ((packet = av_packet_alloc()) == NULL) exit(1);
     if ((frame = av_frame_alloc()) == NULL) exit(1);
 
-    const char *vertex_shader_source = load_shader("vert.glsl");
+    const char *vertex_shader_source = load_shader("/Users/home/Dev/c/hplayer/vert.glsl");
 
     vertex_shader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertex_shader, 1, &vertex_shader_source, NULL);
     glCompileShader(vertex_shader);
 
-    const char *fragment_shader_source = load_shader("frag.glsl");
+    const char *fragment_shader_source = load_shader("/Users/home/Dev/c/hplayer/frag.glsl");
 
     fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragment_shader, 1, &fragment_shader_source, NULL);
@@ -169,6 +169,7 @@ int main(int argc, const char *argv[]) {
             if (ret < 0) exit(1);
 
             glUniform1i(glGetUniformLocation(program, "pixel_format"), frame->format);
+
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
 

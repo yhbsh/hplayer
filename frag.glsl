@@ -4,7 +4,7 @@ in vec2 texCoordVarying;
 uniform sampler2D textureY;
 uniform sampler2D textureU;
 uniform sampler2D textureV;
-uniform int pixel_format; // Real AVPixelFormat enum value
+uniform int pixel_format;
 
 out vec4 fragColor;
 
@@ -18,11 +18,6 @@ void main() {
         vec4 uv_sample = texture(textureU, uv);
         u = uv_sample.r - 0.5;
         v = uv_sample.g - 0.5;
-    } else if (pixel_format == 42) {
-        // AV_PIX_FMT_YUV420P10LE: 10-bit values, scaled to [0, 1]
-        y = texture(textureY, uv).r * (1023.0 / 255.0);
-        u = (texture(textureU, uv).r * (1023.0 / 255.0)) - 0.5;
-        v = (texture(textureV, uv).r * (1023.0 / 255.0)) - 0.5;
     } else {
         // AV_PIX_FMT_YUV420P and AV_PIX_FMT_YUVJ420P: separate U and V planes
         y = texture(textureY, uv).r;
