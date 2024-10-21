@@ -56,18 +56,6 @@ int main(int argc, const char *argv[]) {
         return 1;
     }
 
-    if ((ret = glfwInit()) < 0) return ret;
-
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
-
-    if ((window = glfwCreateWindow(1600, 900, "VIDEO", NULL, NULL)) == NULL) return 1;
-
-    glfwMakeContextCurrent(window);
-    glfwSwapInterval(0);
-
     // av_log_set_level(AV_LOG_TRACE);
 
     if ((ret = avformat_open_input(&format_context, argv[1], NULL, NULL)) < 0) exit(1);
@@ -81,6 +69,19 @@ int main(int argc, const char *argv[]) {
     if ((ret = avcodec_open2(codec_context, codec, NULL)) < 0) exit(1);
     if ((packet = av_packet_alloc()) == NULL) exit(1);
     if ((frame = av_frame_alloc()) == NULL) exit(1);
+
+    if ((ret = glfwInit()) < 0) return ret;
+
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
+
+    if ((window = glfwCreateWindow(codec_context->width, codec_context->height, "VIDEO", NULL, NULL)) == NULL) return 1;
+
+    glfwSetWindowAspectRatio(window, codec_context->width, codec_context->height);
+    glfwMakeContextCurrent(window);
+    glfwSwapInterval(0);
 
     const char *vertex_shader_source = load_shader("/Users/home/Dev/c/hplayer/vert.glsl");
 
