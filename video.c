@@ -83,13 +83,13 @@ int main(int argc, const char *argv[]) {
     glfwMakeContextCurrent(window);
     glfwSwapInterval(0);
 
-    const char *vertex_shader_source = load_shader("/Users/home/Dev/c/hplayer/vert.glsl");
+    const char *vertex_shader_source = load_shader("assets/video_vert.glsl");
 
     vertex_shader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertex_shader, 1, &vertex_shader_source, NULL);
     glCompileShader(vertex_shader);
 
-    const char *fragment_shader_source = load_shader("/Users/home/Dev/c/hplayer/frag.glsl");
+    const char *fragment_shader_source = load_shader("assets/video_frag.glsl");
 
     fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragment_shader, 1, &fragment_shader_source, NULL);

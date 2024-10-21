@@ -1,6 +1,7 @@
 *.dSYM/
 .cache/
 pl
-main
-main_objc
+video
+video_objc
+image
 compile_commands.json
