@@ -170,8 +170,6 @@ int main(int argc, const char *argv[]) {
             if (ret == AVERROR_EOF || ret == AVERROR(EAGAIN)) break;
             if (ret < 0) exit(1);
 
-            glUniform1i(glGetUniformLocation(program, "pixel_format"), frame->format);
-
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
 
