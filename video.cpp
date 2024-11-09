@@ -112,6 +112,7 @@ int main(int argc, const char *argv[]) {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
     GLFWwindow *window = glfwCreateWindow(1280, 720, "WINDOW", NULL, NULL);
+    glfwSetWindowSizeLimits(window, 480, 270, GLFW_DONT_CARE, GLFW_DONT_CARE);
     glfwSetWindowAspectRatio(window, 1280, 720);
     glfwMakeContextCurrent(window);
 
