@@ -163,6 +163,7 @@ int main(int argc, const char *argv[]) {
     av_dict_set(&options, "analyzeduration", "1000000", 0); // Lower analyze duration
     av_dict_set(&options, "probesize", "500000", 0);        // Lower probe size
 
+    av_log_set_level(AV_LOG_TRACE);
     AVFormatContext *format_context = avformat_alloc_context();
     avformat_open_input(&format_context, argv[1], NULL, &options);
     avformat_find_stream_info(format_context, NULL);

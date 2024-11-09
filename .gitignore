@@ -2,6 +2,7 @@
 .cache/
 pl
 video
+video_many
 video_objc
 image
 compile_commands.json
