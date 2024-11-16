@@ -4,6 +4,7 @@ extern "C" {
 #include <libavformat/avformat.h>
 #include <libavutil/opt.h>
 #include <libavutil/pixdesc.h>
+#include <libavutil/time.h>
 }
 
 #define GLFW_INCLUDE_GLCOREARB
@@ -157,13 +158,10 @@ int main(int argc, const char *argv[]) {
 
     int ret;
     AVDictionary *options = NULL;
-    av_dict_set(&options, "rtmp_buffer", "0", 0);           // Minimal buffering for low latency
-    av_dict_set(&options, "rtmp_live", "live", 0);          // Live stream
-    av_dict_set(&options, "tcp_nodelay", "1", 0);           // Disable Nagle’s algorithm
-    av_dict_set(&options, "analyzeduration", "1000000", 0); // Lower analyze duration
-    av_dict_set(&options, "probesize", "500000", 0);        // Lower probe size
+    av_dict_set(&options, "tcp_nodelay", "1", 0);
+    av_dict_set(&options, "analyzeduration", "1000000", 0);
+    av_dict_set(&options, "probesize", "500000", 0);
 
-    av_log_set_level(AV_LOG_TRACE);
     AVFormatContext *format_context = avformat_alloc_context();
     avformat_open_input(&format_context, argv[1], NULL, &options);
     avformat_find_stream_info(format_context, NULL);
@@ -191,16 +189,20 @@ int main(int argc, const char *argv[]) {
         avcodec_open2(acc, ac, NULL);
     }
 
-    while (!glfwWindowShouldClose(window) && av_read_frame(format_context, pkt) >= 0) {
+    int64_t its = av_gettime_relative();
+
+    while (!glfwWindowShouldClose(window)) {
+        ret = av_read_frame(format_context, pkt);
+        if (ret == AVERROR_EOF) break;
+        if (ret == AVERROR(EAGAIN)) continue;
+
         for (int key = GLFW_KEY_0; key < GLFW_KEY_9; key++) {
             if (glfwGetKey(window, key) == GLFW_PRESS) {
                 glUniform1i(glGetUniformLocation(program, "Filter"), key - GLFW_KEY_0);
             }
         }
 
-        if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
-            break;
-        }
+        if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) break;
 
         if (vcc && pkt->stream_index == vci) {
             ret = avcodec_send_packet(vcc, pkt);
@@ -231,14 +233,24 @@ int main(int argc, const char *argv[]) {
 
                 glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-                glfwPollEvents();
                 glfwSwapBuffers(window);
+                glfwPollEvents();
+
+                AVStream *vstream = format_context->streams[vci];
+
+                int64_t fts = (1e6 * frame->pts * vstream->time_base.num) / vstream->time_base.den;
+                int64_t rts = av_gettime_relative() - its;
+                printf("rts: %f fts %f\n", rts * 1e-6, fts * 1e-6);
+
+                if (fts > rts) av_usleep(fts - rts);
             }
         } else if (acc && pkt->stream_index == aci) {
             ret = avcodec_send_packet(acc, pkt);
             while (ret >= 0) {
                 ret = avcodec_receive_frame(acc, frame);
                 if (ret == AVERROR_EOF || ret == AVERROR(EAGAIN)) break;
+                // push the frame data into a ring buffer
+                // the callback is running, so read from the ring buffer, and write to the output device
                 // @TODO: learn this stuff please
             }
         }
